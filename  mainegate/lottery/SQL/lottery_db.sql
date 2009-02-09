@@ -1,11 +1,11 @@
 ﻿
 SET FOREIGN_KEY_CHECKS=0;
 
-CREATE DATABASE `lottery_db`
+CREATE DATABASE `mainegate`
     CHARACTER SET 'latin1'
     COLLATE 'latin1_swedish_ci';
 
-USE `lottery_db`;
+USE `mainegate`;
 
 --
 -- Table structure for table `errors`
@@ -760,3 +760,71 @@ ALTER TABLE `rtblgame`
 ALTER TABLE `tbl_gamesplayed`
   ADD CONSTRAINT `tbl_fk` FOREIGN KEY (`state_id`) REFERENCES `tbl_state` (`state_id`),
   ADD CONSTRAINT `tbl_gamesplayed_fk` FOREIGN KEY (`id`) REFERENCES `game_info` (`id`);
+  
+DROP TABLE IF EXISTS `login_errors`;
+CREATE TABLE `login_errors` (
+  `iduser_acrivity` int(11) NOT NULL auto_increment,
+  `logged` tinyint(1) default NULL,
+  `date` datetime default NULL,
+  `ipaddress` varchar(45) default NULL,
+  `browser` varchar(200) default NULL,
+  `emailaddress` varchar(45) default NULL,
+  PRIMARY KEY  (`iduser_acrivity`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `login_errors`
+--
+
+/*!40000 ALTER TABLE `login_errors` DISABLE KEYS */;
+/*!40000 ALTER TABLE `login_errors` ENABLE KEYS */;
+
+
+--
+-- Definition of table `tbl_roles`
+--
+
+DROP TABLE IF EXISTS `tbl_roles`;
+CREATE TABLE `tbl_roles` (
+  `roleid` int(11) NOT NULL auto_increment,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY  (`roleid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_roles`
+--
+
+/*!40000 ALTER TABLE `tbl_roles` DISABLE KEYS */;
+INSERT INTO `tbl_roles` VALUES  (1,'Admin'),
+ (2,'User'),(3,'Super Admin'),(4,'Guest');
+/*!40000 ALTER TABLE `tbl_roles` ENABLE KEYS */;
+
+
+--
+-- Definition of table `tbl_users`
+--
+
+DROP TABLE IF EXISTS `tbl_users`;
+CREATE TABLE `tbl_users` (
+  `user_id` int(11) NOT NULL auto_increment,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `zip` varchar(15) default NULL,
+  `birthday` date default NULL,
+  `gender` char(1) default NULL,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `access_level` int(11) NOT NULL,
+  `question1` varchar(200) default NULL,
+  `question2` varchar(200) default NULL,
+  `answer1` varchar(200) default NULL,
+  `answer2` varchar(200) default NULL,
+  PRIMARY KEY  (`user_id`),
+  KEY `roles_users` (`access_level`),
+  CONSTRAINT `roles_users` FOREIGN KEY (`access_level`) REFERENCES `tbl_roles` (`roleid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbl_users`
