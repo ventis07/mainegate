@@ -74,7 +74,7 @@ if ($admin == '1') {   // If User Is An Admin
 } else {   // If No Cookies Are Set, Cookies Are Expired, Or Cookies Contain Invalid Username And/Or Password
   print 'NOT logged in.';
   print '<br /><br />';
-  print '<a href="login.php">Login</a>';
+  print '<a href="login.html">Login</a>';
   print '<br /><br />';
   print '<a href="add.php">Add user</a>';
 } }
