@@ -101,8 +101,7 @@ class class_lotto {
          
          $myLastDate =  $this->GetLastRecordDate ($this->CurrentGame['id']);
          if ($myLastDate != $this->FilterResult_Date)
-            {
-                echo "falla aca"; 
+            { 
                 $this->CurrentSQL   =  "INSERT INTO `".DB_TABLES_GAMES_PLAYED."` (`id`,`state_id`,`date`, `number`) VALUES ('". $this->CurrentGame['id']  ."','". $this->CurrentGame['state_id']  ."','". $this->FilterResult_Date  ."', '". $this->FilterResult_Numbers  ."')";
                                 $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB();
                 echo "<br /> Stored witin DB at " . DB_TABLES_GAMES_PLAYED . "_id";
@@ -357,7 +356,6 @@ class class_lotto {
             echo ($this->stateid);
            $query   =   "INSERT INTO `errors` (`state_id`,`game_id`,`game_name` , `reason` , `query`) VALUES ('".$this->stateid."','".$this->CurrentGame['id']."','".$this->PointerName."', '".$this->sql_quote($myReason)."', '". $this->sql_quote($this->CurrentSQL) . "')";
            $my_db_query  =   mysql_query($query) or die("Query Error: " . mysql_error() );
-           echo "falle";
            if ($myApplicationStop === TRUE) {die ("Error executing " . $this->CurrentSQL);}
            $this->ErrorMessages[] =  $this->PointerName . ", " . $this->sql_quote($myReason) . ', ' . $this->sql_quote($this->CurrentSQL);
             

@@ -28,9 +28,9 @@ function disconnect () {
 //*************
 function mail_to ($from , $to, $subject, $message, $attachment=""){
 
-include('pearmail/Mail.php');
-include('pearmail/Mail/mime.php');
-require_once('include/class.html2text.inc');
+include('../pearmail/Mail.php');
+include('../pearmail/Mail/mime.php');
+require_once('class.html2text.inc');
 
 $html = $message;
 

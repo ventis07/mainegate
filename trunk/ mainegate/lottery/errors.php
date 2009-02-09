@@ -1,7 +1,7 @@
 <form name="deleteButton" method="post" action="errors.php">
 <?php
 
-include 'con.php';
+include 'conn.php';
 $errors_sql = mysql_query("SELECT * FROM errors");
 $errors_count = mysql_num_rows($errors_sql);
 
