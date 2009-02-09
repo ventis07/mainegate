@@ -6,9 +6,9 @@ require_once 'classes/user.php';
 
  if (isset($_GET['time'])){
  
-include "include/lottocls.php";
-include "include/config.php";
-require_once('include/functions.php');
+include "classes/lottocls.php";
+include "settings/settings.php";
+require_once('functions/functions.php');
    
   //include "include/mysql.php";
   
