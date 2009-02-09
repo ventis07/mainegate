@@ -1,9 +1,15 @@
 <?php
   
-  include "include/lottocls.php";
-  include "include/config.php";
-  require_once('include/functions.php');
-    
+require 'functions/check-user.php';
+require_once 'classes/user.php';
+//session_start();
+
+ if (isset($_GET['time'])){
+ 
+include "include/lottocls.php";
+include "include/config.php";
+require_once('include/functions.php');
+   
   //include "include/mysql.php";
   
   error_reporting(E_ALL);
@@ -47,9 +53,8 @@
             echo "there was an error sending the email to ".$myErrorsToEmailAddress;
         }
     }
-require 'functions/check-user.php';   // Require check-user.php (ALWAYS Use require For Important Files Such As This
-require_once 'classes/user.php';
-session_start();
+}
+else{
 if ($admin == '1') {   // If User Is An Admin
   print 'Logged in as a admin.';
   print '<br /><br />';
@@ -72,6 +77,6 @@ if ($admin == '1') {   // If User Is An Admin
   print '<a href="login.php">Login</a>';
   print '<br /><br />';
   print '<a href="add.php">Add user</a>';
-} 
+} }
 ?>
 
