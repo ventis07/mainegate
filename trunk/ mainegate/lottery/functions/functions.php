@@ -1,11 +1,12 @@
 <?php
 
+require_once 'settings/settings.php';
 
 //BEGIN DB Connection
 //******************************************************************
 function connect() {
     global $conn;
-    $conn = mysql_connect('localhost', 'root', 'ncc1701') or die("Unable to connect to MySQL");
+    $conn = mysql_connect(DB_HOST, DB_USER, DB_PASS) or die("Unable to connect to MySQL");
     mysql_select_db('lottery_db', $conn) or die ("Unable to find database<br>");
 
  }
