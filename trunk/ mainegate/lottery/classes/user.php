@@ -54,6 +54,10 @@ class User {
                  $this->Username = $db_items['username'];
                  $this->AccessLevel = $db_items['access_level'];
                 }
+			else
+			{
+				return null;
+			}
     
     return $this;
     }
