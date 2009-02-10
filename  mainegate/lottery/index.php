@@ -76,7 +76,7 @@ if ($admin == '1') {   // If User Is An Admin
   print '<br /><br />';
   print '<a href="login.html">Login</a>';
   print '<br /><br />';
-  print '<a href="add.php">Add user</a>';
+  print '<a href="add.html">Add user</a>';
 } }
 ?>
 
