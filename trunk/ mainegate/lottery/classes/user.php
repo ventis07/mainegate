@@ -61,6 +61,16 @@ class User {
     
     return $this;
     }
+	
+	function insertPasswordVerifier()
+	{
+		$verifier = md5(date('U'));
+		$mail = $this->Email;
+		mysql_query("update tbl_users set verifier = '$verifier' where email = '$mail'") or die("Query Error: " . mysql_error() );
+		
+		return ($verifier);
+	}
+	
     function AuthenticateUser($email,$pass){
         $usercheck2 = mysql_query("SELECT * FROM tbl_users WHERE email='$email' AND password='$pass'");
         $usercheck = mysql_num_rows($usercheck2);

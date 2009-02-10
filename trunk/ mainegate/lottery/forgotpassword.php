@@ -14,7 +14,8 @@ $user = $user->GetUser($email);
 
 if ($user != null) {
 	global $myErrorsToEmailAddress, $myServerEmailAddress;
-	mail_to($myServerEmailAddress, $myErrorsToEmailAddress, "your new password", "link para resetear el password");
+	$verifier = $user->insertPasswordVerifier();
+	mail_to($myServerEmailAddress, $email, "Change your Password", "<a href='". "http://localhost:8080/lampsoftware/lottery/changepassword.php?v=". $verifier ."'>Click here to change your password</a>");
 } else {
 	echo ('no existe');
 }
