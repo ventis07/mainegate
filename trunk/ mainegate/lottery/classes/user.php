@@ -23,7 +23,25 @@ class User {
             mysql_query("insert into tbl_users (first_name,last_name,email,username,password,access_level) values ('$firstname','$lastname','$email','$username','$enc','$access')") or die("Query Error: " . mysql_error() );
             return true;
         }
+    }
+	
+	 // Constructor
+   function NewUser2($firstname,$lastname,$email,$username,$password,$access,$q1, $a1, $q2, $a2){
+        $my_db_query = mysql_query("SELECT * from tbl_users WHERE email='$email'");
+        if (mysql_num_rows($my_db_query) > 0)
+        {
+            echo("The email you are trying to add already exists");
+            return false;
         }
+        Else{
+            $enc = md5($password);
+			$ans1 = md5($a1);
+			$ans2 = md5($a2);
+            mysql_query("insert into tbl_users (first_name,last_name,email,username,password,access_level,question1, question2, answer1, answer2) values ('$firstname','$lastname','$email','$username','$enc','$access','$q1','$q2','$ans1','$ans2')") or die("Query Error: " . mysql_error() );
+            return true;
+        }
+    }
+	
     function GetUser($email) {
         $my_db_query = mysql_query("SELECT * from tbl_users WHERE email='$email'");    
             if (mysql_num_rows($my_db_query) > 0)
