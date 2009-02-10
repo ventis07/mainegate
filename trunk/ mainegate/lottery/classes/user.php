@@ -8,6 +8,10 @@ class User {
     public $Email = "";
     public $Username ="";
     public $AccessLevel = 0;
+	public $Question_one = "";
+	public $Question_two = "";
+	public $Answer_one = "";
+	public $Answer_two = "";
     
     //*********
     // Constructor
@@ -53,6 +57,34 @@ class User {
                  $this->Email = $db_items['email'];
                  $this->Username = $db_items['username'];
                  $this->AccessLevel = $db_items['access_level'];
+				 $this->Question_one = $db_items['question1'];
+				 $this->Question_two = $db_items['question2'];
+				 $this->Answer_one = $db_items['answer1'];
+				 $this->Answer_two = $db_items['answer2'];
+                }
+			else
+			{
+				return null;
+			}
+    
+    return $this;
+    }
+	
+	function GetUserByValidationCode($verifier) {
+        $my_db_query = mysql_query("SELECT * from tbl_users WHERE verifier='$verifier'");
+            if (mysql_num_rows($my_db_query) > 0)
+                {
+                 $db_items = mysql_fetch_assoc($my_db_query);
+                 $this->FirstName = $db_items['first_name'];
+                 $this->LastName = $db_items['last_name'];
+                 $this->Password = $db_items['password'];
+                 $this->Email = $db_items['email'];
+                 $this->Username = $db_items['username'];
+                 $this->AccessLevel = $db_items['access_level'];
+				 $this->Question_one = $db_items['question1'];
+				 $this->Question_two = $db_items['question2'];
+				 $this->Answer_one = $db_items['answer1'];
+				 $this->Answer_two = $db_items['answer2'];
                 }
 			else
 			{
