@@ -13,7 +13,8 @@ $user = new User;
 $user = $user->GetUser($email);
 
 if ($user != null) {
-	echo ('existe');
+	global $myErrorsToEmailAddress, $myServerEmailAddress;
+	mail_to($myServerEmailAddress, $myErrorsToEmailAddress, "your new password", "link para resetear el password");
 } else {
 	echo ('no existe');
 }
