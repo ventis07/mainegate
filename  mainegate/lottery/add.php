@@ -15,9 +15,13 @@ $fname = $_POST['fname'];
 $lname = $_POST['lname'];
 $email = $_POST['email'];
 $role = $_POST['role'];
+$seq1 = $_POST['seq1'];
+$ans1 = $_POST['ans1'];
+$seq2 = $_POST['seq2'];
+$ans2 = $_POST['ans2'];
 $user = new user;
 if ($user->check_email_address($email)){
-    if ($user->NewUser($fname,$lname,$email,$username,$pass,$role[0])){
+    if ($user->NewUser2($fname,$lname,$email,$username,$pass,$role[0],$seq1,$ans1,$seq2,$ans2)){
     mysql_close();
     header("Location: index.php");
     }
@@ -58,6 +62,17 @@ Password:<br />
 
                 }
    mysql_close();   // Closing The Connection ?>
-  </SELECT>
+  </SELECT><br /><br /><br />
+  Security Question 1 :<br />
+<input type="text" name="seq1">
+<br /><br />
+Answer 1:<br />
+<input type="text" name="ans1">
+<br /><br />
+  Security Question 2 :<br />
+<input type="text" name="seq2">
+<br /><br />
+Answer 2:<br />
+<input type="text" name="ans2"><br /><br />
 <input type="submit" name="login" value="Submit">
 </form>
