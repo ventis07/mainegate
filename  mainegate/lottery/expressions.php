@@ -9,16 +9,32 @@
 	<script src="./js/scriptaculous/controls.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
+	
+	function testExpression() {
+		if (document.getElementById('txtexpression').value == '') {
+			alert('Expression cannot be empty.');
+			return false;
+		}
+		var topost;
+		$(progress_indicator).style.display = '';
+		topost = document.getElementById('playgame').serialize(document.getElementById('txtexpression').value);
+		new Ajax.Request('./_testexpression.php',
+	                        {asynchronous:false, postBody:topost,
+	                         onSuccess: function(t)
+							{
+								$(progress_indicator).style.display = 'none';
+							}});
+	}
     
-    function displayspots(x) {
+    function displayExpression(x) {
 		x = x.options[x.selectedIndex].value;
 		$(user_list_indicator).style.display = '';
-		new Ajax.Request('./ajax/_getexpression.php',
+		new Ajax.Request('./_getexpression.php',
 	                        {asynchronous:false, parameters:'id=' + x,
 	                         onSuccess: function(t)
 							{
 								$(user_list_indicator).style.display = 'none';
-								document.getElementById('txtexpession').value = t.responseText;
+								document.getElementById('txtexpression').value = t.responseText;
 							}});
     }
 </script>
@@ -33,7 +49,10 @@ require_once 'classes/user.php';
 SqlConnect();
 ?>
   <form id="playgame" method="post" action="expression.php">
-   Game: <SELECT name="state[]" id="state"  onchange="displayspots(this)">
+  <table style="width:100%">
+  <tr>
+  <td style="width:10%">
+   Game: </td><td><select name="state[]" id="state"  onchange="displayExpression(this)">
   <?php
     $selectquery = mysql_query("select gi.id,st.state_name,gi.game_name,gi.spots from game_info gi inner join rtblgame rg on gi.id= rg.id inner join tbl_state st on st.state_id=rg.state_id order by st.state_name");
 	echo "<OPTION VALUE='0'>Select a game</OPTION>";
@@ -46,11 +65,14 @@ SqlConnect();
 
 	}
    ?>
-  </SELECT>
-  <br/>
-  <br />
-  Expression: <input type="text" id="txtexpession" name="txtexpession" style="width:400px"></input><span id="user_list_indicator" style="display: none; position:absolute;">
-									<img src="./resources/spinner.gif" alt="Working..." /></span>
+  </select></td>
+  <tr><td>
+  
+  Expression:</td><td> <input type="text" id="txtexpression" name="txtexpression" style="width:90%"></input>&nbsp;<span id="user_list_indicator" style="display: none; position:absolute;">
+		<img src="./resources/spinner.gif" alt="Working..." /></span></td>
+		</tr></table>
   </form>
+  <input type='button' value='Preview' onClick='testExpression()' />&nbsp;<span id="progress_indicator" style="display: none; position:absolute;">
+		<img src="./resources/wait.gif" alt="Working..." /></span></td>
 </body>
 </html>
