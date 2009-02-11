@@ -91,8 +91,32 @@ class User {
 				return null;
 			}
     
-    return $this;
+		return $this;
     }
+	
+	function checkSecurityQuestionOne($verifier, $answer) {
+		$answer = md5($answer);
+		$my_db_query = mysql_query("SELECT * from tbl_users WHERE verifier='$verifier' and answer1='$answer'");
+		if (mysql_num_rows($my_db_query) > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	function checkSecurityQuestionTwo($verifier, $answer) {
+		$answer = md5($answer);
+		$my_db_query = mysql_query("SELECT * from tbl_users WHERE verifier='$verifier' and answer2='$answer'");
+		if (mysql_num_rows($my_db_query) > 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	function changePassword($verifier, $newpass)
+	{
+		$newpass = md5($newpass);
+		mysql_query("update tbl_users set password = '$newpass' where verifier = '$verifier'") or die("Query Error: " . mysql_error() );
+	}
 	
 	function insertPasswordVerifier()
 	{

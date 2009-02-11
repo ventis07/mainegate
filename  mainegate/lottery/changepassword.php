@@ -6,28 +6,72 @@ require_once 'classes/user.php';
 
 SqlConnect();
 
+$user = new User();
 $verifier = $_GET['v'];
+
 $valid = false;
+$allowchange = false;
+
+$ans1 = $_POST['answer1'];
+$ans2 = $_POST['answer2'];
+
+if (isset($_POST['newpass'])) {
+	$user->changePassword($verifier, $_POST['newpass']);
+	header("Location: login.php");
+}
 
 if ($verifier != "")
 {
-	$user = new User();
 	$user = $user->GetUserByValidationCode($verifier);
-	if ($user != null)
-	{
+	if ($user != null) {
 		$valid = true;
+	
+		if (isset($_POST['answer1'])) {
+			if ($user->checkSecurityQuestionOne($verifier, $ans1)) {
+				$allowchange = true;
+			}
+			else {
+				//echo ('sec 1 is not valid');
+			}
+		}
+		if (!$allowchange && isset($_POST['answer2'])) {
+			if ($user->checkSecurityQuestionTwo($verifier, $ans2)) {
+				$allowchange = true;
+			}
+			else {
+				//echo ('sec 2 is not valid');
+			}
+		}
+	}
+}
+if ($valid && !$allowchange)
+{
 		?>
 			<form method="POST" action='changepassword.php?v=<?echo $verifier?>'>
-			Email: <? echo($user->Email) ?><br />
-			Secret Question 1: <? echo($user->Question_one) ?><br />
-			Secret Answer 1: <input type='text' name='answer1' /><br />
+			Email: <? echo($user->Email) ?><br /><br />
+			Secret Question 1: <? echo($user->Question_one) ?><br /><br />
+			Secret Answer 1: <input type='text' name='answer1' /><br /><br />
+			<?php
+			if (isset($_POST['answer1'])) {
+			?>
+			Secret Question 2: <? echo($user->Question_two) ?><br /><br />
+			Secret Answer 2: <input type='text' name='answer2' /><br /><br />
+			<?php
+			}
+			?>
 			<input type='submit' value='send' />
 			</form>
 		<?php
-	}
 }
-if ($valid)
-{}
+elseif ($valid && $allowchange) {
+		?>
+		<form method="POST" action='changepassword.php?v=<?echo $verifier?>'>
+		Email: <? echo($user->Email) ?><br /><br />
+		New Password: <input type='password' name='newpass' /><br /><br />
+		<input type='submit' value='send' />
+		</form>
+		<?php
+}
 else
 {
 	?>
