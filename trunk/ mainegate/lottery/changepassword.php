@@ -48,18 +48,28 @@ if ($valid && !$allowchange)
 {
 		?>
 			<form method="POST" action='changepassword.php?v=<?echo $verifier?>'>
+			<?php
+			if (!isset($_POST['answer1']) && !isset($_POST['answer2'])) {
+			?>
 			Email: <? echo($user->Email) ?><br /><br />
 			Secret Question 1: <? echo($user->Question_one) ?><br /><br />
-			Secret Answer 1: <input type='text' name='answer1' /><br /><br />
-			<?php
-			if (isset($_POST['answer1'])) {
-			?>
-			Secret Question 2: <? echo($user->Question_two) ?><br /><br />
-			Secret Answer 2: <input type='text' name='answer2' /><br /><br />
+			Secret Answer 1: <input type='text' name='answer1' /><br /><br />			
+			<input type='submit' value='send' />
 			<?php
 			}
+			if (isset($_POST['answer1']) && !isset($_POST['answer2'])) {
 			?>
+			Email: <? echo($user->Email) ?><br /><br />
+			Secret Question 2: <? echo($user->Question_two) ?><br /><br />
+			Secret Answer 2: <input type='text' name='answer2' /><br /><br />
 			<input type='submit' value='send' />
+			<?php
+			}
+			if (isset($_POST['answer2'])) {
+			?>
+				<h2>Both security questions are incorrect.<br>User cound not be authenticated.</h2>
+			<?php
+			} ?>
 			</form>
 		<?php
 }
