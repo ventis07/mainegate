@@ -15,6 +15,7 @@
 			alert('Expression cannot be empty.');
 			return false;
 		}
+
 		var topost;
 		$(progress_indicator).style.display = '';
 		topost = document.getElementById('playgame').serialize(document.getElementById('txtexpression').value);
@@ -24,7 +25,21 @@
 							{
 								$(progress_indicator).style.display = 'none';
 								document.getElementById('response').innerHTML = t.responseText;
-								document.getElementById('response').style.display = 'block';
+								Effect.Appear('response', { duration: 3.0 });
+							}});
+	}
+	
+	function saveExpression() {		
+		var topost;
+		$(progress_indicator).style.display = '';
+		topost = document.getElementById('playgame').serialize(document.getElementById('txtexpression').value);
+		new Ajax.Request('./_saveexpression.php',
+	                        {asynchronous:false, postBody:topost,
+	                         onSuccess: function(t)
+							{
+								$(progress_indicator).style.display = 'none';
+								document.getElementById('response').innerHTML = t.responseText;
+								Effect.Appear('response', { duration: 3.0 });
 							}});
 	}
     
@@ -73,10 +88,13 @@ SqlConnect();
   Expression:</td><td> <input type="text" id="txtexpression" name="txtexpression" style="width:90%"></input>&nbsp;<span id="user_list_indicator" style="display: none; position:absolute;">
 		<img src="./resources/spinner.gif" alt="Working..." /></span></td>
 		</tr>
-		<tr><td><input type='button' value='Preview' onClick='testExpression()' /></td>
+		<tr><td><input type='button' value='Preview' onClick='testExpression()' style='margin-top:20px' /></td>
 		<td><span id="progress_indicator" style="display: none; position:absolute;">
-		<img src="./resources/wait.gif" alt="Working..." /></span></td></tr></table>
-  </form>
-  <div style="width:90%; border:1px solid black; display:none" id="response"></div>
+		<img src="./resources/wait.gif" alt="Working..." /></span></td></tr>
+		<tr><td><input type='button' value='Save Expression' onClick='saveExpression()' style='margin-top:20px' /></td>
+		<td></td></tr>
+		
+		<tr><td colspan="2"><div style="margin-top:30px;padding-5px; width:90%; border:1px solid black; display:none" id="response"></div></td></tr></table></form>
+  
 </body>
 </html>
