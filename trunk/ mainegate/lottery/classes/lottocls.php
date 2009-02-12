@@ -36,42 +36,48 @@ class class_lotto {
     //*********
     // Constructor
    function __construct($params = NULL) 
-        {
+	{
 
-            date_default_timezone_set('Europe/London');  //0 GMT
-            $this->DayOfTheWeek = date('w');
-            
-            $this->SetTimeEvent ();
-            
-            $this->Load_Games ();
-            $this->SetGamesFilter ();
-           
-        }
+		date_default_timezone_set('Europe/London');  //0 GMT
+		$this->DayOfTheWeek = date('w');
+		
+		$this->SetTimeEvent ();
+		
+		$this->Load_Games ();
+		$this->SetGamesFilter ();
+	   
+	}
         
    
     //*********
     //********
     function ParseGames ()    
-        {
-            if (count ($this->dbGames) > 0)
-                {
-                    foreach ($this->dbGames as $key => $array)
-                        {
-                          $this->isError = FALSE;
-                          if (!$this->isError) $this->SetUpCurrentGame($array['id']);                            
-                          
-                          if (!$this->isError)$this->grabPage();
-                          if (!$this->isError)$this->data_organise();
-                          if (!$this->isError)$this->applyFilter();
-                          if (!$this->isError)$this->FilterResultsOrganise();
+	{
+		if (count ($this->dbGames) > 0)
+			{
+				foreach ($this->dbGames as $key => $array)
+					{
+					  $this->isError = FALSE;
+					  if (!$this->isError) $this->SetUpCurrentGame($array['id']);                            
+					  
+					  if (!$this->isError)$this->grabPage();
+					  if (!$this->isError)$this->data_organise();
+					  if (!$this->isError)$this->applyFilter();
+					  if (!$this->isError)$this->FilterResultsOrganise();
 
 
-                          if (!$this->isError)$this->StoreToDB();
-                          
-                          $this->EchoGameResult ();
-                        }
-                }
-        }
+					  if (!$this->isError)$this->StoreToDB();
+					  
+					  $this->EchoGameResult ();
+					}
+			}
+	}
+		
+	function reRunGames($gamesid)
+	{
+		$this->re_load_game($gamesid);
+		$this->ParseGames();
+	}
 		
 	function testRegularExpression($gameid, $regexp)
 	{
@@ -148,17 +154,17 @@ class class_lotto {
     //*********
     //*******
     function GetLastRecordDate ($id)
-        {
-            
-            $this->CurrentSQL   =  "SELECT * FROM ". DB_TABLES_GAMES_PLAYED ." WHERE `id`= ".$id." ORDER BY `time` desc LIMIT 1";
-            $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB();
-            $myLastDate = "";
-            if (mysql_num_rows($my_db_query) > 0) {$row  = mysql_fetch_assoc($my_db_query); $myLastDate = $row['date'];}
-            
-            return ($myLastDate);
-            
-        
-        }
+	{
+		
+		$this->CurrentSQL   =  "SELECT * FROM ". DB_TABLES_GAMES_PLAYED ." WHERE `id`= ".$id." ORDER BY `time` desc LIMIT 1";
+		$my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB();
+		$myLastDate = "";
+		if (mysql_num_rows($my_db_query) > 0) {$row  = mysql_fetch_assoc($my_db_query); $myLastDate = $row['date'];}
+		
+		return ($myLastDate);
+		
+	
+	}
    
     //*********
    // 
@@ -184,9 +190,9 @@ class class_lotto {
      //*********
      // Apply Filter for the  htmnl content    
     function applyFilter ()
-        {
-           preg_match ($this->CurrentGame['regular_expression'] , $this->GrabContent, $this->FilterResult);
-        }
+	{
+	   preg_match ($this->CurrentGame['regular_expression'] , $this->GrabContent, $this->FilterResult);
+	}
         
      
      //*********   
@@ -365,6 +371,28 @@ class class_lotto {
                 }
         }
     
+	function re_load_game($id)
+        {
+            $this->CurrentSQL   =   "SELECT `id`, `time`, `occurance` FROM `" . DB_TABLES_GAMES_INFO . "` where id = '$id'";
+            $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB('',TRUE);
+            
+            if (mysql_num_rows($my_db_query) > 0)
+                {
+                 while ($db_items = mysql_fetch_assoc($my_db_query)) 
+                    {
+                        
+                        $this->dbGames[]  = array ( 
+                                                        'id' => $db_items['id'], 
+                                                        'time' => $db_items['time'],
+                                                        'occurance' => $db_items['occurance']
+                                                   );
+                        
+                    
+                    }                                           
+                    
+                    
+                }
+        }
     
     //****   Exclude the games which aren't need to parse for the crrent day'
     //**** 
