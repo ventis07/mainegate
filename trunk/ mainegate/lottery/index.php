@@ -62,6 +62,8 @@ if ($admin == '1') {   // If User Is An Admin
   print '<br /><br />';
   print '<a href="index.php?time=day">Run games -day-</a>';
   print '<br /><br />';
+  print '<a href="insertgameinfo.php">insert new game</a>';
+  print '<br /><br />';
   print '<a href="errors.php">Check errors</a>';
   print '<br /><br />';
   print '<a href="expressions.php">Add and Try regular expressions</a>';
@@ -75,6 +77,8 @@ if ($admin == '1') {   // If User Is An Admin
   print '<a href="index.php?time=eve">Run games -eve-</a>';
   print '<br /><br />';
   print '<a href="index.php?time=day">Run games -day-</a>';
+  print '<br /><br />';
+  print '<a href="insertgameinfo.php">insert new game</a>';
   print '<br /><br />';
   print '<a href="errors.php">Check errors</a>';
   print '<br /><br />';

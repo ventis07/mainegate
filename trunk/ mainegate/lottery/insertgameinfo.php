@@ -1,6 +1,9 @@
 <?php
-
+require_once 'functions/check-user.php';
+require_once 'classes/user.php';
 include "functions/global.php";
+
+if (isset($_SESSION['user']) && ($admin==1 || $admin==2)) {
 SqlConnect();
 
 if ($_POST)
@@ -112,5 +115,16 @@ foreach($state as $value){
   </tr>
   </table>
 </form>
+<? }
+Else {
+print 'NOT logged in or insuficcient privileges.';
+  print '<br /><br />';
+  print '<a href="login.html">Login</a>';
+  print '<br /><br />';
+  print '<a href="add.html">Add user</a>';
+  print '<br /><br />';
+  print '<a href="forgotpassword.html">Forgot password</a>';
+}
+?>
 </body>
 </html>

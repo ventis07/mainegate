@@ -1,4 +1,8 @@
-<!-- import the calendar script -->
+<?php
+include "functions/global.php";
+require_once 'functions/check-user.php';
+require_once 'classes/user.php';
+?>
 <link href="js/jscalendar/calendar-win2k-cold-1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jscalendar/calendar.js"></script>
 <script type="text/javascript" src="js/jscalendar/lang/calendar-en.js"></script>
@@ -32,10 +36,8 @@
 <body>
 
 <?php
-include "functions/global.php";
-//require_once 'functions/check-user.php';
-require_once 'classes/user.php';
-
+if (isset($_SESSION['user']) && ($admin==1 || $admin==2)) {
+ 
 SqlConnect();
 
 ?>
@@ -68,4 +70,15 @@ SqlConnect();
     }
   );
 </script>
+<? }
+Else {
+print 'NOT logged in or insuficcient privileges.';
+  print '<br /><br />';
+  print '<a href="login.html">Login</a>';
+  print '<br /><br />';
+  print '<a href="add.html">Add user</a>';
+  print '<br /><br />';
+  print '<a href="forgotpassword.html">Forgot password</a>';
+}
+?>
 </body>

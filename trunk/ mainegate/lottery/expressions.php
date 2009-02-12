@@ -1,3 +1,9 @@
+<?php
+require_once 'functions/check-user.php';
+require_once 'classes/user.php';
+if (isset($_SESSION['user']) && ($admin==1 || $admin==2)) {
+
+?>
 <!-- import the calendar script -->
 <html>
 <head>
@@ -61,7 +67,7 @@
 <?php
 require_once 'classes/errors.php';
 require_once 'functions/global.php';
-require_once 'classes/user.php';
+
 
 SqlConnect();
 ?>
@@ -95,6 +101,16 @@ SqlConnect();
 		<td></td></tr>
 		
 		<tr><td colspan="2"><div style="margin-top:30px;padding-5px; width:90%; border:1px solid black; display:none" id="response"></div></td></tr></table></form>
-  
+  <? }
+Else {
+print 'NOT logged in or insuficcient privileges.';
+  print '<br /><br />';
+  print '<a href="login.html">Login</a>';
+  print '<br /><br />';
+  print '<a href="add.html">Add user</a>';
+  print '<br /><br />';
+  print '<a href="forgotpassword.html">Forgot password</a>';
+}
+?>
 </body>
 </html>
