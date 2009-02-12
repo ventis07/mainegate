@@ -23,6 +23,8 @@
 	                         onSuccess: function(t)
 							{
 								$(progress_indicator).style.display = 'none';
+								document.getElementById('response').innerHTML = t.responseText;
+								document.getElementById('response').style.display = 'block';
 							}});
 	}
     
@@ -70,9 +72,11 @@ SqlConnect();
   
   Expression:</td><td> <input type="text" id="txtexpression" name="txtexpression" style="width:90%"></input>&nbsp;<span id="user_list_indicator" style="display: none; position:absolute;">
 		<img src="./resources/spinner.gif" alt="Working..." /></span></td>
-		</tr></table>
+		</tr>
+		<tr><td><input type='button' value='Preview' onClick='testExpression()' /></td>
+		<td><span id="progress_indicator" style="display: none; position:absolute;">
+		<img src="./resources/wait.gif" alt="Working..." /></span></td></tr></table>
   </form>
-  <input type='button' value='Preview' onClick='testExpression()' />&nbsp;<span id="progress_indicator" style="display: none; position:absolute;">
-		<img src="./resources/wait.gif" alt="Working..." /></span></td>
+  <div style="width:90%; border:1px solid black; display:none" id="response"></div>
 </body>
 </html>

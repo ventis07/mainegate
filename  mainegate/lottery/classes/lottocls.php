@@ -72,6 +72,35 @@ class class_lotto {
                         }
                 }
         }
+		
+	function testRegularExpression($gameid, $regexp)
+	{
+		$result = "algo hace parece";
+		$this->load_game($gameid);
+		if (count ($this->dbGames) > 0)
+		{
+			foreach ($this->dbGames as $key => $array)
+			{
+				  $this->isError = FALSE;
+				  if (!$this->isError) $this->SetUpCurrentGame($array['id']);                            
+				  $this->CurrentGame['regular_expression'] = $regexp ;
+				  if (!$this->isError)$this->grabPage();
+				  
+				  if (!$this->isError)$this->data_organise();
+				  
+				  if (!$this->isError)$this->applyFilter();
+				  
+				  if (!$this->isError)$this->FilterResultsOrganiseTest();
+				  
+
+
+				  //if (!$this->isError)$this->StoreToDB();
+				  
+				  $this->EchoGameResult ();
+			}
+		}
+		return $result;
+	}
    
     
     //*********
@@ -136,7 +165,7 @@ class class_lotto {
    function SetUpCurrentGame ($myGameID)
     {
 
-          $this->CurrentSQL   =   "SELECT *  FROM `" . DB_TABLES_GAMES_INFO . "`inner join lottery_db.rtblgame using (`id`) WHERE `id` = '" . $myGameID . "limit 1'";
+          $this->CurrentSQL   =   "SELECT *  FROM `" . DB_TABLES_GAMES_INFO . "`inner join ".DB_NAME.".rtblgame using (`id`) WHERE `id` = '" . $myGameID . "' limit 1";
           $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB('',TRUE);
     
           if (mysql_num_rows($my_db_query) > 0)
@@ -196,6 +225,43 @@ class class_lotto {
                     $this->error_toDB ("No matches, the page had been changed or the patern fail");                
                 }
         }
+		
+		
+		function FilterResultsOrganiseTest ()
+        {
+			
+            if (count ($this->FilterResult) > 0)
+			{
+				// no need for this element
+				unset ($this->FilterResult[0]);
+				
+				foreach ($this->FilterResult as $key => $value)
+					{
+						 $this->FilterResult[$key] = trim ($value);
+					}
+					
+				$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
+				unset ($this->FilterResult[1]);
+				
+				$myNumber = "";
+				foreach  ($this->FilterResult as $key => $value)
+					{
+						
+						if (strlen($value)==1) {$value = "0".$value;}
+						
+						if (strlen($myNumber)>0) {$myNumber .=  NUMBERS_COMMA . $value;}
+										else {$myNumber .=  "$value";}
+					}
+
+			   $this->FilterResult_Numbers = $myNumber;
+			   unset ($this->FilterResult);
+
+			}
+            else
+			{
+				echo ("No matches, the page had been changed or the patern fail");                
+			}
+        }
         
         
          
@@ -254,6 +320,31 @@ class class_lotto {
     function load_games ()
         {
             $this->CurrentSQL   =   "SELECT `id`, `time`, `occurance` FROM `" . DB_TABLES_GAMES_INFO . "`";
+            $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB('',TRUE);
+            
+            if (mysql_num_rows($my_db_query) > 0)
+                {
+                 while ($db_items = mysql_fetch_assoc($my_db_query)) 
+                    {
+                        
+                        $this->dbGames[]  = array ( 
+                                                        'id' => $db_items['id'], 
+                                                        'time' => $db_items['time'],
+                                                        'occurance' => $db_items['occurance']
+                                                   );
+                        
+                    
+                    }                                           
+                    
+                    
+                }
+        }
+    
+	//****   Games id and occurance load
+    //**** 
+    function load_game($id)
+        {
+            $this->CurrentSQL   =   "SELECT `id`, `time`, `occurance` FROM `" . DB_TABLES_GAMES_INFO . "` where id = '$id'";
             $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB('',TRUE);
             
             if (mysql_num_rows($my_db_query) > 0)
