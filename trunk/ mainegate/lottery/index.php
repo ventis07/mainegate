@@ -58,9 +58,29 @@ else{
 if ($admin == '1') {   // If User Is An Admin
   print 'Logged in as a admin.';
   print '<br /><br />';
+  print '<a href="index.php?time=eve">Run games -eve-</a>';
+  print '<br /><br />';
+  print '<a href="index.php?time=day">Run games -day-</a>';
+  print '<br /><br />';
+  print '<a href="errors.php">Check errors</a>';
+  print '<br /><br />';
+  print '<a href="expressions.php">Add and Try regular expressions</a>';
+  print '<br /><br />';
+  print '<a href="playgame.php">add numbers for a given game</a>';
+  print '<br /><br />';
   print '<a href="logout.php">Logout</a>';
 } else if ($admin == '2') {   // If User Is An SuperAdmin
   print 'Logged in as a Super Admin.';
+  print '<br /><br />';
+  print '<a href="index.php?time=eve">Run games -eve-</a>';
+  print '<br /><br />';
+  print '<a href="index.php?time=day">Run games -day-</a>';
+  print '<br /><br />';
+  print '<a href="errors.php">Check errors</a>';
+  print '<br /><br />';
+  print '<a href="expressions.php">Add and Try regular expressions</a>';
+  print '<br /><br />';
+  print '<a href="playgame.php">add numbers for a given game</a>';
   print '<br /><br />';
   print '<a href="logout.php">Logout</a>';
 } else if ($auth == '1') {   // If User Is Just A Regular User (Non-Admin)

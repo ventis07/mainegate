@@ -1,6 +1,7 @@
 <?php
 
-include "conn.php";
+include "functions/global.php";
+SqlConnect();
 
 if ($_POST)
 {
