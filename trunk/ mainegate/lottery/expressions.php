@@ -71,7 +71,7 @@ require_once 'functions/global.php';
 
 SqlConnect();
 ?>
-  <form id="playgame" method="post" action="expression.php">
+  <form id="playgame" method="post" action="expression.php" cellpadding="0" cellspacing="0">
   <table style="width:100%">
   <tr>
   <td style="width:10%">
@@ -91,7 +91,7 @@ SqlConnect();
   </select></td>
   <tr><td>
   
-  Expression:</td><td> <input type="text" id="txtexpression" name="txtexpression" style="width:90%"></input>&nbsp;<span id="user_list_indicator" style="display: none; position:absolute;">
+  Expression:</td><td> <textarea id="txtexpression" name="txtexpression" style="width:90%;height:100px"></textarea>&nbsp;<span id="user_list_indicator" style="display: none; position:absolute;">
 		<img src="./resources/spinner.gif" alt="Working..." /></span></td>
 		</tr>
 		<tr><td><input type='button' value='Preview' onClick='testExpression()' style='margin-top:20px' /></td>
