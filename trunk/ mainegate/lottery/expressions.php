@@ -100,7 +100,7 @@ SqlConnect();
 		<tr><td><input type='button' value='Save Expression' onClick='saveExpression()' style='margin-top:20px' /></td>
 		<td></td></tr>
 		
-		<tr><td colspan="2"><div style="margin-top:30px;padding-5px; width:90%; border:1px solid black; display:none" id="response"></div></td></tr></table></form>
+		<tr><td colspan="2"><div style="margin-top:30px;padding:5px; width:90%; border:1px solid black; display:none" id="response"></div></td></tr></table></form>
   <? }
 Else {
 print 'NOT logged in or insuficcient privileges.';

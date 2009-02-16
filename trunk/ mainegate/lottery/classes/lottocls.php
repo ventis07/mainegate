@@ -116,6 +116,7 @@ class class_lotto {
 			 echo "<br /><b>Game Name:</b> " . $this->CurrentGame['game_name'] . " - ID ". $this->CurrentGame['id'] ."<br />"; 
 			 echo "<b>URL:</b> " . $this->CurrentGame['url'] . "<br />"; 
 			 echo $this->FilterResult_Date . " " . $this->FilterResult_Numbers;
+			 echo "<br><br>";
 		}
 		else 
 			{
