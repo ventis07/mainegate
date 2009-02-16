@@ -102,11 +102,29 @@ class class_lotto {
 
 				  //if (!$this->isError)$this->StoreToDB();
 				  
-				  $this->EchoGameResult ();
+				  $this->EchoGameResultTest ();
 			}
 		}
 		return $result;
 	}
+	
+	 //*********
+   function EchoGameResultTest ()
+    {
+	 if (!$this->isError)
+		{
+			 echo "<br /><b>Game Name:</b> " . $this->CurrentGame['game_name'] . " - ID ". $this->CurrentGame['id'] ."<br />"; 
+			 echo "<b>URL:</b> " . $this->CurrentGame['url'] . "<br />"; 
+			 echo $this->FilterResult_Date . " " . $this->FilterResult_Numbers;
+		}
+		else 
+			{
+				echo "<br />There was an error parsing the data for Game Name:" . $this->CurrentGame['game_name'] . "- ID ". $this->CurrentGame['id'] ."<br />Skip"; 
+				 echo "<hr />";  
+			}
+	 
+	 flush ();
+    }
    
     
     //*********
