@@ -36,48 +36,99 @@ class class_lotto {
     //*********
     // Constructor
    function __construct($params = NULL) 
-        {
+	{
 
-            date_default_timezone_set('Europe/London');  //0 GMT
-            $this->DayOfTheWeek = date('w');
-            
-            $this->SetTimeEvent ();
-            
-            $this->Load_Games ();
-            $this->SetGamesFilter ();
-           
-        }
+		date_default_timezone_set('Europe/London');  //0 GMT
+		$this->DayOfTheWeek = date('w');
+		
+		$this->SetTimeEvent ();
+		
+		$this->Load_Games ();
+		$this->SetGamesFilter ();
+	   
+	}
         
    
     //*********
     //********
     function ParseGames ()    
-        {
-              
-            if (count ($this->dbGames) > 0)
-                {
-                     
-                    foreach ($this->dbGames as $key => $array)
-                        {
-                          $this->isError = FALSE;
-                          if (!$this->isError) $this->SetUpCurrentGame($array['id']);                            
-                          
-                          if (!$this->isError)$this->grabPage();
-                          if (!$this->isError)$this->data_organise();
-                          if (!$this->isError)$this->applyFilter();
-                          if (!$this->isError)$this->FilterResultsOrganise();
+	{
+		if (count ($this->dbGames) > 0)
+			{
+				foreach ($this->dbGames as $key => $array)
+					{
+					  $this->isError = FALSE;
+					  if (!$this->isError) $this->SetUpCurrentGame($array['id']);                            
+					  
+					  if (!$this->isError)$this->grabPage();
+					  if (!$this->isError)$this->data_organise();
+					  if (!$this->isError)$this->applyFilter();
+					  if (!$this->isError)$this->FilterResultsOrganise();
 
 
-                          if (!$this->isError)$this->StoreToDB();
-                          
-                          $this->EchoGameResult ();
-                        }
-                }
-        }
+					  if (!$this->isError)$this->StoreToDB();
+					  
+					  $this->EchoGameResult ();
+					}
+			}
+	}
+		
+	function reRunGames($gamesid)
+	{
+		$this->re_load_game($gamesid);
+		$this->ParseGames();
+	}
+		
+	function testRegularExpression($gameid, $regexp)
+	{
+		$result = "algo hace parece";
+		$this->load_game($gameid);
+		if (count ($this->dbGames) > 0)
+		{
+			foreach ($this->dbGames as $key => $array)
+			{
+				  $this->isError = FALSE;
+				  if (!$this->isError) $this->SetUpCurrentGame($array['id']);                            
+				  $this->CurrentGame['regular_expression'] = $regexp ;
+				  if (!$this->isError)$this->grabPage();
+				  
+				  if (!$this->isError)$this->data_organise();
+				  
+				  if (!$this->isError)$this->applyFilter();
+				  
+				  if (!$this->isError)$this->FilterResultsOrganiseTest();
+				  
+
+
+				  //if (!$this->isError)$this->StoreToDB();
+				  
+				  $this->EchoGameResultTest ();
+			}
+		}
+		return $result;
+	}
+	
+	 //*********
+   function EchoGameResultTest ()
+    {
+	 if (!$this->isError)
+		{
+			 echo "<br /><b>Game Name:</b> " . $this->CurrentGame['game_name'] . " - ID ". $this->CurrentGame['id'] ."<br />"; 
+			 echo "<b>URL:</b> " . $this->CurrentGame['url'] . "<br />"; 
+			 echo $this->FilterResult_Date . " " . $this->FilterResult_Numbers;
+			 echo "<br><br>";
+		}
+		else 
+			{
+				echo "<br />There was an error parsing the data for Game Name:" . $this->CurrentGame['game_name'] . "- ID ". $this->CurrentGame['id'] ."<br />Skip"; 
+				 echo "<hr />";  
+			}
+	 
+	 flush ();
+    }
    
     
     //*********
-    // echo
    function EchoGameResult ()
     {
          
@@ -104,9 +155,9 @@ class class_lotto {
          
          $myLastDate =  $this->GetLastRecordDate ($this->CurrentGame['id']);
          if ($myLastDate != $this->FilterResult_Date)
-            {
+            { 
                 $this->CurrentSQL   =  "INSERT INTO `".DB_TABLES_GAMES_PLAYED."` (`id`,`state_id`,`date`, `number`) VALUES ('". $this->CurrentGame['id']  ."','". $this->CurrentGame['state_id']  ."','". $this->FilterResult_Date  ."', '". $this->FilterResult_Numbers  ."')";
-                $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB();
+                                $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB();
                 echo "<br /> Stored witin DB at " . DB_TABLES_GAMES_PLAYED . "_id";
             }
          
@@ -122,24 +173,24 @@ class class_lotto {
     //*********
     //*******
     function GetLastRecordDate ($id)
-        {
-            
-            $this->CurrentSQL   =  "SELECT * FROM ". DB_TABLES_GAMES_PLAYED ." WHERE `id`= ".$id." ORDER BY `time` desc LIMIT 1";
-            $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB();
-            $myLastDate = "";
-            if (mysql_num_rows($my_db_query) > 0) {$row  = mysql_fetch_assoc($my_db_query); $myLastDate = $row['date'];}
-            
-            return ($myLastDate);
-            
-        
-        }
+	{
+		
+		$this->CurrentSQL   =  "SELECT * FROM ". DB_TABLES_GAMES_PLAYED ." WHERE `id`= ".$id." ORDER BY `time` desc LIMIT 1";
+		$my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB();
+		$myLastDate = "";
+		if (mysql_num_rows($my_db_query) > 0) {$row  = mysql_fetch_assoc($my_db_query); $myLastDate = $row['date'];}
+		
+		return ($myLastDate);
+		
+	
+	}
    
     //*********
    // 
    function SetUpCurrentGame ($myGameID)
     {
 
-          $this->CurrentSQL   =   "SELECT *  FROM `" . DB_TABLES_GAMES_INFO . "`inner join lottery_db.rtblgame using (`id`) WHERE `id` = '" . $myGameID . "limit 1'";
+          $this->CurrentSQL   =   "SELECT *  FROM `" . DB_TABLES_GAMES_INFO . "`inner join ".DB_NAME.".rtblgame using (`id`) WHERE `id` = '" . $myGameID . "' limit 1";
           $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB('',TRUE);
     
           if (mysql_num_rows($my_db_query) > 0)
@@ -158,9 +209,9 @@ class class_lotto {
      //*********
      // Apply Filter for the  htmnl content    
     function applyFilter ()
-        {
-           preg_match ($this->CurrentGame['regular_expression'] , $this->GrabContent, $this->FilterResult);
-        }
+	{
+	   preg_match ($this->CurrentGame['regular_expression'] , $this->GrabContent, $this->FilterResult);
+	}
         
      
      //*********   
@@ -173,32 +224,22 @@ class class_lotto {
                     unset ($this->FilterResult[0]);
                     
                     foreach ($this->FilterResult as $key => $value)
-                    {
+                        {
                              $this->FilterResult[$key] = trim ($value);
-                    }
-                   	if(isset($this->FilterResult['date']))
-					{	
-						$this->FilterResult['date'] = str_replace('-','/',$this->FilterResult['date']);
-						$this->FilterResult_Date = date('m/d/Y', strtotime($this->FilterResult['date']));						
-						unset ($this->FilterResult['date']);						
-						unset ($this->FilterResult[count($this->FilterResult)]);					
-					}
-					else
-					{     
-						$this->FilterResult[1] = str_replace('-','/',$this->FilterResult[1]);
-						$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
-						unset ($this->FilterResult[1]);
-                    }
-					
+                        }
+                        
+                    $this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
+                    unset ($this->FilterResult[1]);
+                    
                     $myNumber = "";
                     foreach  ($this->FilterResult as $key => $value)
-                    {
+                        {
                             
                             if (strlen($value)==1) {$value = "0".$value;}
                             
                             if (strlen($myNumber)>0) {$myNumber .=  NUMBERS_COMMA . $value;}
                                             else {$myNumber .=  "$value";}
-                    }
+                        }
 
                    $this->FilterResult_Numbers = $myNumber;
                    unset ($this->FilterResult);
@@ -207,7 +248,44 @@ class class_lotto {
             else
                 {
                     $this->error_toDB ("No matches, the page had been changed or the patern fail");                
-                }				
+                }
+        }
+		
+		
+		function FilterResultsOrganiseTest ()
+        {
+			
+            if (count ($this->FilterResult) > 0)
+			{
+				// no need for this element
+				unset ($this->FilterResult[0]);
+				
+				foreach ($this->FilterResult as $key => $value)
+					{
+						 $this->FilterResult[$key] = trim ($value);
+					}
+					
+				$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
+				unset ($this->FilterResult[1]);
+				
+				$myNumber = "";
+				foreach  ($this->FilterResult as $key => $value)
+					{
+						
+						if (strlen($value)==1) {$value = "0".$value;}
+						
+						if (strlen($myNumber)>0) {$myNumber .=  NUMBERS_COMMA . $value;}
+										else {$myNumber .=  "$value";}
+					}
+
+			   $this->FilterResult_Numbers = $myNumber;
+			   unset ($this->FilterResult);
+
+			}
+            else
+			{
+				echo ("No matches, the page had been changed or the patern fail");                
+			}
         }
         
         
@@ -229,7 +307,6 @@ class class_lotto {
                           
                           curl_setopt($ch, CURLOPT_URL, $this->CurrentGame['url']); //sets url
                           curl_setopt($ch, CURLOPT_USERAGENT, "$useragent");
-						  //curl_setopt($ch,CURLOPT_PROXY,'127.0.0.1:8580');						  
                           curl_setopt($ch, CURLOPT_FAILONERROR, TRUE); //even if there is error it will return string
                           curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //return page as string
                           curl_setopt($ch, CURLOPT_HEADER, 0); //header
@@ -259,7 +336,7 @@ class class_lotto {
 
         $this->GrabContent = ereg_replace( "\n", "", $this->GrabContent);
         $this->GrabContent = preg_replace('/>\s+</m', '><', $this->GrabContent);
-        //echo $this->GrabContent;
+        
     }
     
     
@@ -285,9 +362,56 @@ class class_lotto {
                     }                                           
                     
                     
-                }        
+                }
         }
     
+	//****   Games id and occurance load
+    //**** 
+    function load_game($id)
+        {
+            $this->CurrentSQL   =   "SELECT `id`, `time`, `occurance` FROM `" . DB_TABLES_GAMES_INFO . "` where id = '$id'";
+            $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB('',TRUE);
+            
+            if (mysql_num_rows($my_db_query) > 0)
+                {
+                 while ($db_items = mysql_fetch_assoc($my_db_query)) 
+                    {
+                        
+                        $this->dbGames[]  = array ( 
+                                                        'id' => $db_items['id'], 
+                                                        'time' => $db_items['time'],
+                                                        'occurance' => $db_items['occurance']
+                                                   );
+                        
+                    
+                    }                                           
+                    
+                    
+                }
+        }
+    
+	function re_load_game($id)
+        {
+            $this->CurrentSQL   =   "SELECT `id`, `time`, `occurance` FROM `" . DB_TABLES_GAMES_INFO . "` where id = '$id'";
+            $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB('',TRUE);
+            
+            if (mysql_num_rows($my_db_query) > 0)
+                {
+                 while ($db_items = mysql_fetch_assoc($my_db_query)) 
+                    {
+                        
+                        $this->dbGames[]  = array ( 
+                                                        'id' => $db_items['id'], 
+                                                        'time' => $db_items['time'],
+                                                        'occurance' => $db_items['occurance']
+                                                   );
+                        
+                    
+                    }                                           
+                    
+                    
+                }
+        }
     
     //****   Exclude the games which aren't need to parse for the crrent day'
     //**** 
@@ -317,7 +441,7 @@ class class_lotto {
                                             $found  =   FALSE;
                                         }
                             }
-                         //if($array['id'] !=203)	$found=FALSE;
+                         
                          if (!$found) {
                              unset ($this->dbGames["$key"]);
                          }
@@ -367,9 +491,9 @@ class class_lotto {
            $this->SetStateId();
            $this->isError = TRUE;
            
+            echo ($this->stateid);
            $query   =   "INSERT INTO `errors` (`state_id`,`game_id`,`game_name` , `reason` , `query`) VALUES ('".$this->stateid."','".$this->CurrentGame['id']."','".$this->PointerName."', '".$this->sql_quote($myReason)."', '". $this->sql_quote($this->CurrentSQL) . "')";
            $my_db_query  =   mysql_query($query) or die("Query Error: " . mysql_error() );
-           
            if ($myApplicationStop === TRUE) {die ("Error executing " . $this->CurrentSQL);}
            $this->ErrorMessages[] =  $this->PointerName . ", " . $this->sql_quote($myReason) . ', ' . $this->sql_quote($this->CurrentSQL);
             
