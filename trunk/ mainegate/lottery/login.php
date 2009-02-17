@@ -33,7 +33,9 @@ Password:<br />
   SqlConnect();
  
   $email = $_POST['username'];   // Setting The Variable (Always User Different Variable Names Than What Is In Your HTML Forms)
-  $pass = md5($_POST['password']);   // Setting The Variable (Always User Different Variable Names Than What Is In Your HTML Forms - Password Should Also Always Be MD5 Encrypted)
+  $algo = 'sha512';
+	$key = $_POST['password'];
+	$pass = hash($algo, $key); // Setting The Variable (Always User Different Variable Names Than What Is In Your HTML Forms - Password Should Also Always Be MD5 Encrypted)
   $user = new User;
   if ($user->check_email_address($email)){
   
