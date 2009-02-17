@@ -1,6 +1,6 @@
 <HTML>
 <head>
-	<title>Expression</title>
+	<title>Errors page</title>
 	<script src="./js/scriptaculous/prototype.js" type="text/javascript"></script>
 	<script src="./js/scriptaculous/effects.js" type="text/javascript"></script>
 	<script src="./js/scriptaculous/dragdrop.js" type="text/javascript"></script>
@@ -8,6 +8,8 @@
 </head>
 <body>
 <?php
+if (isset($_SESSION['user']) && ($admin==3)||($admin==1)) {
+
 print '<form name="deleteButton" method="post" action="errors.php">';
 
 
@@ -222,8 +224,19 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 </form>
 <div id="errorsdiv" style="width:100%; border:1px solid black"></div>
 <body>
-<script type="text/javascript">
-    
+
+<?}
+Else {
+print 'NOT logged in or insuficcient privileges.';
+  print '<br /><br />';
+  print '<a href="login.html">Login</a>';
+  print '<br /><br />';
+  print '<a href="add.html">Add user</a>';
+  print '<br /><br />';
+  print '<a href="forgotpassword.html">Forgot password</a>';
+}
+?>
+<script type="text/javascript">`
 function checkUncheckAll(theElement)
 {
 	var theForm = theElement.form, z = 0;
@@ -287,7 +300,6 @@ function checkUncheckAll(theElement)
 	function Delete(){
         
         document.deleteButton.action = "errors.php";
-        alert(document.deleteButton.action);
         document.deleteButton.submit();
 
     }
