@@ -3,7 +3,7 @@ require_once 'functions/check-user.php';
 require_once 'classes/user.php';
 include "functions/global.php";
 
-if (isset($_SESSION['user']) && ($admin==1 || $admin==2)) {
+if (isset($_SESSION['user']) && ($admin==2)) {
 SqlConnect();
 
 if ($_POST)

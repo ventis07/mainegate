@@ -36,7 +36,7 @@ require_once 'classes/user.php';
 <body>
 
 <?php
-if (isset($_SESSION['user']) && ($admin==1 || $admin==2)) {
+if (isset($_SESSION['user']) && ($admin==2)) {
  
 SqlConnect();
 
@@ -58,7 +58,7 @@ SqlConnect();
   <br/>
   <input type="text" id="data" name="data" />
   <button id="trigger">pick date</button>
-  <input type="submit" id="play" value="play!!">
+  <input type="submit" id="play" value="Save">
   <div id="createTextbox"></div>
   </form>
   <script type="text/javascript">
