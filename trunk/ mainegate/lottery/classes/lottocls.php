@@ -392,14 +392,13 @@ class class_lotto {
     
 	function re_load_game($id)
         {
-            $this->CurrentSQL   =   "SELECT `id`, `time`, `occurance` FROM `" . DB_TABLES_GAMES_INFO . "` where id in ('$id')";
+            $this->CurrentSQL   =   "SELECT `id`, `time`, `occurance` FROM `" . DB_TABLES_GAMES_INFO . "` where id in ($id)";
             $my_db_query  =   mysql_query($this->CurrentSQL) or $this->error_toDB('',TRUE);
             
             if (mysql_num_rows($my_db_query) > 0)
                 {
                  while ($db_items = mysql_fetch_assoc($my_db_query)) 
                     {
-                        
                         $this->dbGames[]  = array ( 
                                                         'id' => $db_items['id'], 
                                                         'time' => $db_items['time'],
