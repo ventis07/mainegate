@@ -12,6 +12,9 @@ class User {
 	public $Question_two = "";
 	public $Answer_one = "";
 	public $Answer_two = "";
+	public $zip = "";
+	public $dob = "";
+	public $gender = "M";
     
     //*********
     // Constructor
@@ -34,6 +37,9 @@ class User {
 	 // Constructor
    function NewUser2($firstname,$lastname,$email,$username,$password,$access,$q1, $a1, $q2, $a2){
         $my_db_query = mysql_query("SELECT * from tbl_users WHERE email='$email'");
+		$zip = $this->zip;
+		$birthday = $this->dob;
+		$gender = $this->gender;
         if (mysql_num_rows($my_db_query) > 0)
         {
             echo("The email you are trying to add already exists");
@@ -45,7 +51,7 @@ class User {
 			$enc =  hash($algo, $key);            
 			$ans1 = hash($algo, $a1);
 			$ans2 = hash($algo, $a2);
-            mysql_query("insert into tbl_users (first_name,last_name,email,username,password,access_level,question1, question2, answer1, answer2) values ('$firstname','$lastname','$email','$username','$enc','$access','$q1','$q2','$ans1','$ans2')") or die("Query Error: " . mysql_error() );
+            mysql_query("insert into tbl_users (first_name,last_name,email,username,password,access_level,question1, question2, answer1, answer2, zip, birthday, gender) values ('$firstname','$lastname','$email','$username','$enc','$access','$q1','$q2','$ans1','$ans2','$zip','$birthday', '$gender')") or die("Query Error: " . mysql_error() );
             return true;
         }
     }
