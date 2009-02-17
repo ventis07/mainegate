@@ -180,6 +180,9 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 	<td>
 		<?php echo ucfirst($errors_row['reason']) ?>
 	</td>
+	<td>
+		 <a href="<?php echo ucfirst($errors_row['url'])?>"> Go to site
+	</td>
 <tr>	
 <?php
 }
@@ -214,8 +217,9 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 	</td>	
 </tr>
 </table>
-<div id="ErrorDiv"></div>
+
 </form>
+<div id="errorsdiv" style="width:100%; border:1px solid black"></div>
 <body>
 <script type="text/javascript">
     
@@ -244,7 +248,10 @@ function checkUncheckAll(theElement)
 				x += sp.split(",")[1];
 				x += ",";
 			}
-			
+		}
+		if(x != "")
+		{
+			x = x + "0";
 		}
 		
 		$('progress_indicator').style.display = '';
@@ -253,8 +260,8 @@ function checkUncheckAll(theElement)
 	                         onSuccess: function(t)
 							{
 								$('progress_indicator').style.display = 'none';
-								document.getElementById('ErrorDiv').InnerHtml = t.responseText;
-								alert(t.responseText);
+								document.getElementById('errorsdiv').innerHTML = t.responseText;
+								//alert(t.responseText);
 							}});
     }
 	
