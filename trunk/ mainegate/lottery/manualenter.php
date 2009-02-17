@@ -8,7 +8,8 @@ require_once 'classes/user.php';
 <script type="text/javascript" src="js/jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="js/jscalendar/calendar-setup.js"></script>
 <script type="text/javascript">
-    
+
+
     function displayspots(x){
         var i = 0;
         y=x;
@@ -16,7 +17,7 @@ require_once 'classes/user.php';
         if (document.getElementById("createTextbox").innerHTML == ""){
         while (i<x)
         {
-            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='number'+i name='mytext"+ i +"' size=3/>&nbsp;"
+            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='mytext"+ i +"' name='mytext"+ i +"' size=3 MAXLENGTH=3 onKeyUp=\"return validateInt(event,'mytext"+i+"')\"/>&nbsp;"
             i++;
         }
     }
@@ -24,13 +25,27 @@ require_once 'classes/user.php';
         document.getElementById("createTextbox").innerHTML = "";
         while (i<x)
         {
-            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='number'+i name='mytext"+ i +"' size=3/>&nbsp;"
+            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='mytext"+ i +"' name='mytext"+ i +"' size=3 MAXLENGTH=3 onKeyUp=\"return validateInt(event,'mytext"+i+"')\"/>&nbsp;"
             i++;
         }
     }
     y=y.options[y.selectedIndex].value.split(",")[2];
     document.getElementById("data").value=y;
 }
+function validateInt(event,x)
+   {
+      var reg= /\d{3}|\d{2}|\d{1}/;
+   if (document.getElementById(x).value !== ''){
+      if (document.getElementById(x).value.match(reg)){
+          //alert(document.getElementById(x).value+' is a number');
+          return true;
+      }
+      else {
+          alert(document.getElementById(x).value+ ' is not a number');
+          return false;
+      }
+   }
+   }
 
 </script>
 <body>
@@ -58,7 +73,7 @@ SqlConnect();
   <br/>
   <input type="text" id="data" name="data" />
   <button id="trigger">pick date</button>
-  <input type="submit" id="play" value="Saved">
+  <input type="submit" id="play" value="Save">
   <div id="createTextbox"></div>
   </form>
   <script type="text/javascript">
