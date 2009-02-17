@@ -7,8 +7,9 @@
 	<script src="./js/scriptaculous/controls.js" type="text/javascript"></script>
 </head>
 <body>
-<form name="deleteButton" method="post" action="errors.php">
 <?php
+print '<form name="deleteButton" method="post" action="errors.php">';
+
 
 include 'functions/global.php';
 
@@ -41,7 +42,7 @@ else
 </tr>
 <tr>
 	<td>
-		<input name="delete" type="submit" id="delete" value="Delete">
+		<input name="delete" type="submit" id="delete" value="Delete" onclick="Delete()">
 	</td>
 	<td>
 		<input name="rerun" type="button" id="rerun" value="ReRun" onclick="Rerungame(this)">
@@ -197,7 +198,7 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 <table>
 <tr>
 	<td>
-		<input name="delete" type="submit" id="delete" value="Delete">
+		<input name="delete" type="submit" id="delete" value="Delete" onclick="Delete()">
 	</td>
 	<td>
 		<input name="rerun" type="button" id="rerun" value="ReRun" onclick="Rerungame(this)">
@@ -282,6 +283,13 @@ function checkUncheckAll(theElement)
 		document.deleteButton.action = "processgame.php"
 		document.deleteButton.submit();
 	}
-	
+
+	function Delete(){
+        
+        document.deleteButton.action = "errors.php";
+        alert(document.deleteButton.action);
+        document.deleteButton.submit();
+
+    }
 </script>
 </HTML>
