@@ -58,7 +58,7 @@ SqlConnect();
   <br/>
   <input type="text" id="data" name="data" />
   <button id="trigger">pick date</button>
-  <input type="submit" id="play" value="Save">
+  <input type="submit" id="play" value="Saved">
   <div id="createTextbox"></div>
   </form>
   <script type="text/javascript">
