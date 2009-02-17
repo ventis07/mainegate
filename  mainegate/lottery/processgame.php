@@ -22,17 +22,18 @@ print '<p> The data has been succesfully saved </p><a href="index.php">back to i
 
 if (isset($_POST[ide])){
     $i=0;
-    $errordata= split(",",$_POST['ide']);
+    $substring = substr($_POST['ide'],0,-1);
+    $errordata= split(",",$substring);
     print '<form id="form1" name="form1" method="post" action="processgame.php">';
     print'<table>';
     foreach ($errordata as $value){
 
-            $selectquery = mysql_query("SELECT state_id,game_id FROM errors WHERE error_id=$value");
+            $selectquery = mysql_query("SELECT e.state_id,e.game_id,g.game_name,e.errors FROM errors e inner join game_info g on e.game_id=g.id WHERE error_id='$value'");
             $db_items = mysql_fetch_assoc($selectquery);
 
             print '<tr>';
             print '<td>';
-            print '<label for="numbers">'.date('U').' :</label>';
+            print '<label for="numbers">'.$db_items['game_name']."  ".$db_items['errors']." : ".'</label>';
             print '</td>';
             print '<td>';
             print '<input type="hidden" name="state'.$i.'" id="state'.$i.'" value="'.$db_items['state_id'].'" />';
@@ -53,13 +54,11 @@ if ((isset($_POST[numbers0])) && (isset($_POST[gameid0]))){
         $numbers=$_POST['numbers'.$i];
         $gameid=$_POST['gameid'.$i];
         $state= $_POST['state'.$i];
-        mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
-    VALUES ('$gameid', '$state',now(), '$numbers', now()") or die(mysql_error());
+        var_dump(mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
+    VALUES ('$gameid', '$state',now(), '$numbers', now())") or die(mysql_error()));
         $i=$i+1;
 }
-
+echo("All changes saved succesfully");
+print '<a href="index.php"> back to index </a>';
 }
-
-
-
 ?>
