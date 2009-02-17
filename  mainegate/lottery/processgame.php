@@ -28,7 +28,7 @@ if (isset($_POST[ide])){
     print'<table>';
     foreach ($errordata as $value){
 
-            $selectquery = mysql_query("SELECT e.state_id,e.game_id,g.game_name,e.errors FROM errors e inner join game_info g on e.game_id=g.id WHERE error_id='$value'");
+            $selectquery = mysql_query("SELECT e.state_id,e.game_id,g.game_name,e.errors,g.url FROM errors e inner join game_info g on e.game_id=g.id WHERE error_id='$value'");
             $db_items = mysql_fetch_assoc($selectquery);
 
             print '<tr>';
@@ -39,6 +39,7 @@ if (isset($_POST[ide])){
             print '<input type="hidden" name="state'.$i.'" id="state'.$i.'" value="'.$db_items['state_id'].'" />';
             print '<input type="hidden" name="gameid'.$i.'" id="gameid'.$i.'" value="'.$db_items['game_id'].'" />';
             print '<input type="text" name="numbers'.$i.'" id="numbers'.$i.'" />';
+            print '<a href="'.$db_items['url'].'/> Website Url </a>';
             print '</td>';
             print '</tr>';
             $i=$i+1;
