@@ -19,8 +19,14 @@ $seq1 = $_POST['seq1'];
 $ans1 = $_POST['ans1'];
 $seq2 = $_POST['seq2'];
 $ans2 = $_POST['ans2'];
+$zip = $_POST['zip'];
+$birthday = $_POST['birthday'];
+$gender = $_POST['gender'];
 $user = new user;
 if ($user->check_email_address($email)){
+	$user->zip = $zip;
+	$user->dob = $birthday;
+	$user->gender = $gender;
     //if ($user->NewUser2($fname,$lname,$email,$username,$pass,$role[0],$seq1,$ans1,$seq2,$ans2)){
 	if ($user->NewUser2($fname,$lname,$email,$username,$pass,2,$seq1,$ans1,$seq2,$ans2)){
     mysql_close();

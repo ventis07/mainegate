@@ -1,5 +1,11 @@
-
-
+<html>
+<head>
+<link href="js/jscalendar/calendar-win2k-cold-1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jscalendar/calendar.js"></script>
+<script type="text/javascript" src="js/jscalendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="js/jscalendar/calendar-setup.js"></script>
+</head>
+<body>
 <form method="post" action="ProcessUser.php">
 Fisrt Name :<br />
 <input type="text" name="fname">
@@ -15,6 +21,18 @@ Username :<br />
 <br /><br />
 Password:<br />
 <input type="password" name="password">
+<br /><br />
+Zip :<br />
+<input type="text" name="zip">
+<br /><br />
+Birthday :<br />
+<input type="text" name="birthday" id="bithday"><button id="trigger">pick date</button>
+<br /><br />
+Gender :<br />
+<select name="gender" id="gender">
+	<option value="M">Male</option>
+	<option value="F">Female</option>
+</select>
 <br /><br />
 
 <!--<label for="role">Access Level :</label>
@@ -45,3 +63,14 @@ Answer 2:<br />
 <input type="text" name="ans2"><br /><br />
 <input type="submit" name="login" value="Submit">
 </form>
+<script type="text/javascript">
+  Calendar.setup(
+    {
+      inputField  : "bithday",         // ID of the input field
+      ifFormat    : "%Y-%m-%d",    // the date format
+      button      : "trigger"       // ID of the button
+    }
+  );
+</script>
+</body>
+</html>
