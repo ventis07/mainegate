@@ -23,7 +23,9 @@ class User {
             return false;
         }
         Else{
-            $enc = md5($password);
+			$algo = 'sha512';
+			$key = $password;
+			$enc =  hash($algo, $key);            
             mysql_query("insert into tbl_users (first_name,last_name,email,username,password,access_level) values ('$firstname','$lastname','$email','$username','$enc','$access')") or die("Query Error: " . mysql_error() );
             return true;
         }
@@ -38,9 +40,11 @@ class User {
             return false;
         }
         Else{
-            $enc = md5($password);
-			$ans1 = md5($a1);
-			$ans2 = md5($a2);
+			$algo = 'sha512';
+			$key = $password;
+			$enc =  hash($algo, $key);            
+			$ans1 = hash($algo, $a1);
+			$ans2 = hash($algo, $a2);
             mysql_query("insert into tbl_users (first_name,last_name,email,username,password,access_level,question1, question2, answer1, answer2) values ('$firstname','$lastname','$email','$username','$enc','$access','$q1','$q2','$ans1','$ans2')") or die("Query Error: " . mysql_error() );
             return true;
         }
@@ -95,7 +99,9 @@ class User {
     }
 	
 	function checkSecurityQuestionOne($verifier, $answer) {
-		$answer = md5($answer);
+		$algo = 'sha512';
+		$key = $answer;
+		$answer =  hash($algo, $key);
 		$my_db_query = mysql_query("SELECT * from tbl_users WHERE verifier='$verifier' and answer1='$answer'");
 		if (mysql_num_rows($my_db_query) > 0) {
 			return true;
@@ -104,7 +110,9 @@ class User {
 	}
 	
 	function checkSecurityQuestionTwo($verifier, $answer) {
-		$answer = md5($answer);
+		$algo = 'sha512';
+		$key = $answer;
+		$answer =  hash($algo, $key);
 		$my_db_query = mysql_query("SELECT * from tbl_users WHERE verifier='$verifier' and answer2='$answer'");
 		if (mysql_num_rows($my_db_query) > 0) {
 			return true;
@@ -114,7 +122,9 @@ class User {
 	
 	function changePassword($verifier, $newpass)
 	{
-		$newpass = md5($newpass);
+		$algo = 'sha512';
+		$key = $newpass;
+		$newpass =  hash($algo, $key);
 		mysql_query("update tbl_users set password = '$newpass' where verifier = '$verifier'") or die("Query Error: " . mysql_error() );
 	}
 	
