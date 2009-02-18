@@ -34,7 +34,7 @@ require_once 'classes/user.php';
 }
 function validateInt(event,x)
    {
-      var reg= /\d{3}|\d{2}|\d{1}/;
+      var reg= /^(\d{3}|\d{2}|\d{1})$/;
    if (document.getElementById(x).value !== ''){
       if (document.getElementById(x).value.match(reg)){
           //alert(document.getElementById(x).value+' is a number');
