@@ -1,6 +1,6 @@
 <?php
   
-require 'functions/check-user.php';
+require_once 'functions/check-user.php';
 require_once 'classes/user.php';
 //session_start();
 
@@ -8,7 +8,8 @@ require_once 'classes/user.php';
  
 include "classes/lottocls.php";
 include "settings/settings.php";
-require_once('functions/functions.php');
+//require_once('functions/functions.php');
+require_once('functions/global.php');
    
   //include "include/mysql.php";
   
@@ -20,7 +21,7 @@ require_once('functions/functions.php');
   
  
   // Open connection to the database
-  connect ();
+  SQLconnect();
   
   
   $myLottery    =   new class_lotto;
