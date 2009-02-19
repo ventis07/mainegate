@@ -143,8 +143,14 @@ class User {
 		return ($verifier);
 	}
 	
+	function activateAccount()
+	{
+		$mail = $this->Email;
+		mysql_query("update tbl_users set account_state = 1 where email = '$mail'") or die("Query Error: " . mysql_error() );
+	}
+	
     function AuthenticateUser($email,$pass){
-        $usercheck2 = mysql_query("SELECT * FROM tbl_users WHERE email='$email' AND password='$pass'");
+        $usercheck2 = mysql_query("SELECT * FROM tbl_users WHERE account_state = 1 AND email='$email' AND password='$pass'");
         $usercheck = mysql_num_rows($usercheck2);
         if ($usercheck > '0') {   // If One Or More Users Were Found
         $this->GetUser($email);
