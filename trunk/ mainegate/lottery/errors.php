@@ -274,7 +274,7 @@ function checkUncheckAll(theElement)
 		
 		for(z=0; z<theForm.length;z++)
 		{
-			if(theForm[z].type == 'checkbox' && theForm[z].checked)
+			if(theForm[z].type == 'checkbox' && theForm[z].checked && theForm[z].id != "chkSelectAll")
 			{
 				sp = theForm[z].value;
 				x += sp.split(",")[1];
@@ -308,7 +308,7 @@ function checkUncheckAll(theElement)
 		var theForm = theElement.form, z = 0;
 		for(z=0; z<theForm.length;z++)
 		{
-			if(theForm[z].type == 'checkbox' && theForm[z].checked)
+			if(theForm[z].type == 'checkbox' && theForm[z].checked  && theForm[z].id != "chkSelectAll")
 			{
 				if(x!="")
 					x += ",";
