@@ -29,8 +29,35 @@ require_once 'classes/user.php';
             i++;
         }
     }
-    y=y.options[y.selectedIndex].value.split(",")[2];
-    document.getElementById("data").value=y;
+    y=y.options[y.selectedIndex].value.split(",")[3];
+    o=new Date();
+    var z = new Date();
+    thisDay=o.getDay();
+    previous=-1;
+    p=0;
+
+    if (y.indexOf(thisDay) != -1){
+                
+        }
+     else{
+       while ((p < y.length) && (y.charAt(p) < thisDay)){
+       previous=y.charAt(p);
+       //alert(previous);
+       p++
+       }
+       if (previous == -1){
+           previous=y.charAt(y.length-1);
+           previous= 7-(previous-thisDay);
+       }
+       else {
+           previous=thisDay-previous;
+       }
+        z.setDate(z.getDate()-previous);
+
+     }
+     alert(z);
+     var zz = z.getFullYear()+"-"+(z.getMonth()+1)+"-"+z.getDate();
+    document.getElementById("data").value=zz;
 }
 function validateInt(event,x)
    {
@@ -59,12 +86,12 @@ SqlConnect();
   <form id="playgame" method="post" action="processgame.php">
    <SELECT name="state[]" id="state"  ONCHANGE="displayspots(this)">
   <?php
-    $selectquery = mysql_query("select gi.id,st.state_name,st.state_id,gi.game_name,gi.spots,(select max(Time) from tbl_gamesplayed where id=gi.id) as Time from game_info gi inner join rtblgame rg on gi.id= rg.id inner join tbl_state st on st.state_id=rg.state_id left join tbl_gamesplayed t on gi.id=t.id and st.state_id=t.state_id order by st.state_name");
+    $selectquery = mysql_query("select gi.id,gi.occurance,st.state_name,st.state_id,gi.game_name,gi.spots,(select max(Time) from tbl_gamesplayed where id=gi.id) as Time from game_info gi inner join rtblgame rg on gi.id= rg.id inner join tbl_state st on st.state_id=rg.state_id left join tbl_gamesplayed t on gi.id=t.id and st.state_id=t.state_id order by st.state_name");
     if (mysql_num_rows($selectquery) > 0)
                 {
                  while ($db_items = mysql_fetch_assoc($selectquery)) {
                      //echo($db_items['state_id']);
-                    echo "<OPTION VALUE=\"".$db_items['id'].",".$db_items['spots'].",".$db_items['Time'].",".$db_items['state_id']."\">".$db_items['state_name']." - ".$db_items['game_name']."</OPTION>";
+                    echo "<OPTION VALUE=\"".$db_items['id'].",".$db_items['spots'].",".$db_items['Time'].",".$db_items['occurance'].",".$db_items['state_id']."\">".$db_items['state_name']." - ".$db_items['game_name']."</OPTION>";
                  }
 
                 }

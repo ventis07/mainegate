@@ -22,7 +22,7 @@ print '<p> The data has been succesfully saved </p><a href="index.php">back to i
 
 if (isset($_POST[ide])){
     $i=0;
-    $substring = substr($_POST['ide'],0,-1);
+    $substring = substr($_POST['ide'],0);
     $errordata= split(",",$substring);
     print '<form id="form1" name="form1" method="post" action="processgame.php">';
     print'<table>';
