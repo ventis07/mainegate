@@ -43,7 +43,7 @@ else
 </tr>
 <tr>
 	<td>
-		<input name="delete" type="submit" id="delete" value="Delete" onclick="Delete()">
+		<input name="delete" type="button" id="delete" value="Delete" onclick="Delete(this)">
 	</td>
 	<td>
 		<input name="rerun" type="button" id="rerun" value="ReRun" onclick="Rerungame(this)">
@@ -57,25 +57,40 @@ else
 	</td>			
 </tr>	
 </table>
-<table id="mainTable" width="100%" border="1">
+<table id="mainTable" width="100%">
 
 <? if (!$_POST['delete']){ ?>
 <tr>
 	<td>
 	</td>
-	<td align="center" width="20%"><a href="errors.php?sort=4">
+	<td align="center" width="20%"><a href="errors.php?sort=4 
+	<?php if ($_GET['sort']=='4 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
 		Date
 	</td >
-	<td align="center"><a href="errors.php?sort=3">
+	<td align="center"><a href="errors.php?sort=3 
+	<?php if ($_GET['sort']=='3 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
 		State
 	</td>
-	<td align="center"><a href="errors.php?sort=5">
+	<td align="center"><a href="errors.php?sort=5 
+	<?php if ($_GET['sort']=='5 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
 		Game Name
 	</td>
-	<td align="center"><a href="errors.php?sort=6">
+	<td align="center"><a href="errors.php?sort=6 
+	<?php if ($_GET['sort']=='6 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
 		Error Message
 	</td>
-
 </tr>
 <?php
 }
@@ -85,16 +100,32 @@ else
 <tr>
 	<td>
 	</td>	
-	<td align="center" width="20%"><a href="errors.php?sort=4">
+	<td align="center" width="20%"><a href="errors.php?sort=4 
+	<?php if ($_GET['sort']=='4 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
 		Date
 	</td >
-	<td align="center"><a href="errors.php?sort=3">
+	<td align="center"><a href="errors.php?sort=3 
+	<?php if ($_GET['sort']=='3 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
 		State
 	</td>
-	<td align="center"><a href="errors.php?sort=5">
+	<td align="center"><a href="errors.php?sort=5 
+	<?php if ($_GET['sort']=='5 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
 		Game Name
 	</td>
-	<td align="center"><a href="errors.php?sort=6">
+	<td align="center"><a href="errors.php?sort=6 
+	<?php if ($_GET['sort']=='6 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
 		Error Message
 	</td>
 </tr>
@@ -199,7 +230,7 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 <table>
 <tr>
 	<td>
-		<input name="delete" type="submit" id="delete" value="Delete" onclick="Delete()">
+		<input name="delete" type="button" id="delete" value="Delete" onclick="Delete(this)">
 	</td>
 	<td>
 		<input name="rerun" type="button" id="rerun" value="ReRun" onclick="Rerungame(this)">
@@ -257,14 +288,20 @@ function checkUncheckAll(theElement)
 		}
 		
 		$('progress_indicator').style.display = '';
-		new Ajax.Request('./_RerunGames.php',
-	                        {asynchronous:false, parameters:'id=' + x,
-	                         onSuccess: function(t)
-							{
-								$('progress_indicator').style.display = 'none';
-								document.getElementById('errorsdiv').innerHTML = t.responseText;
-								//alert(t.responseText);
-							}});
+		if(x!="," && x!="")
+		{
+			alert(x);
+			new Ajax.Request('./_RerunGames.php',
+								{asynchronous:false, parameters:'id=' + x,
+								 onSuccess: function(t)
+								{
+									$('progress_indicator').style.display = 'none';
+									document.getElementById('errorsdiv').innerHTML = t.responseText;
+									//alert(t.responseText);
+								}});
+		}
+		else		
+			$('progress_indicator').style.display = 'none';
     }
 	
 	function EditNumbers(theElement)
@@ -275,21 +312,31 @@ function checkUncheckAll(theElement)
 		{
 			if(theForm[z].type == 'checkbox' && theForm[z].checked)
 			{
+				if(x!="")
+					x += ",";
 				sp = theForm[z].value;
 				x += sp.split(",")[0];
-				x += ",";
 				document.getElementById('ide').value=x;
 			}
 		}
-		document.deleteButton.action = "processgame.php"
-		document.deleteButton.submit();
+		if(x!="")
+		{
+			document.deleteButton.action = "processgame.php"
+			document.deleteButton.submit();
+		}
 	}
 
-	function Delete(){
-        
-        document.deleteButton.action = "errors.php";
-        document.deleteButton.submit();
-
+	function Delete(theElement){
+		var theForm = theElement.form, z = 0;
+		for(z=0; z<theForm.length;z++)
+		{
+			if(theForm[z].type == 'checkbox' && theForm[z].checked)
+			{
+				document.deleteButton.action = "errors.php";
+				document.deleteButton.submit();
+				return;
+			}
+		}	
     }
 </script>
 </HTML>
