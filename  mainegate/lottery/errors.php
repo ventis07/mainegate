@@ -38,7 +38,7 @@ else
 <table>
 <tr>
 	<td width="10%" colspan="2">
-		Select/Unselect All<input name="chkSelectAll" type="checkbox" id="chkSelectAll" onclick="checkUncheckAll(this);">
+		Select/Unselect All<input name="chkSelectAll" type="checkbox" id="chkSelectAll" onclick="checkUncheckAll(this);" value="">
 	</td>
 </tr>
 <tr>
@@ -245,7 +245,7 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 </tr>
 <tr>
 	<td width="10%" colspan="2">
-		Select/Unselect All<input name="chkSelectAll" type="checkbox" id="chkSelectAll" onclick="checkUncheckAll(this);">
+		Select/Unselect All<input name="chkSelectAll" type="checkbox" id="chkSelectAll" onclick="checkUncheckAll(this);" value="">
 	</td>	
 </tr>
 </table>
