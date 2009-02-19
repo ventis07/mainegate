@@ -4,29 +4,104 @@
 <script type="text/javascript" src="js/jscalendar/calendar.js"></script>
 <script type="text/javascript" src="js/jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="js/jscalendar/calendar-setup.js"></script>
+<script type="text/javascript" language="javascript">
+	function validateEmail(email) {
+		var reg = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/; 
+		if (email.match(reg)) { 
+			return true;
+		}
+		return false;
+	}
+
+	function validateForm()
+	{
+		if (document.getElementById("fname").value == "") {
+			alert("First Name cannot be empty");
+			document.getElementById("fname").focus();
+			return false;
+		}
+		if (document.getElementById("lname").value == "") {
+			alert("Last Name cannot be empty");
+			document.getElementById("lname").focus();
+			return false;
+		}
+		if (document.getElementById("email").value == "") {
+			alert("Email cannot be empty");
+			document.getElementById("email").focus();
+			return false;
+		} else {
+			if ( ! validateEmail(document.getElementById("email").value) ){
+				alert("Email address is not valid");
+				document.getElementById("email").focus();
+				return false;
+			}
+		}
+		if (document.getElementById("username").value == "") {
+			alert("Username cannot be empty");
+			document.getElementById("username").focus();
+			return false;
+		}
+		if (document.getElementById("password").value == "") {
+			alert("Password cannot be empty");
+			document.getElementById("password").focus();
+			return false;
+		}
+		if (document.getElementById("zip").value == "") {
+			alert("Zip cannot be empty");
+			document.getElementById("zip").focus();
+			return false;
+		}
+		if (document.getElementById("birthday").value == "") {
+			alert("Birthday cannot be empty");
+			document.getElementById("birthday").focus();
+			return false;
+		}
+		if (document.getElementById("seq1").value == "") {
+			alert("Security Question 1 cannot be empty");
+			document.getElementById("seq1").focus();
+			return false;
+		}
+		if (document.getElementById("ans1").value == "") {
+			alert("Answer 1 cannot be empty");
+			document.getElementById("ans1").focus();
+			return false;
+		}
+		if (document.getElementById("seq2").value == "") {
+			alert("Security Question 2 cannot be empty");
+			document.getElementById("seq2").focus();
+			return false;
+		}
+		if (document.getElementById("ans2").value == "") {
+			alert("Answer 2 cannot be empty");
+			document.getElementById("ans2").focus();
+			return false;
+		}
+		return true;
+	}
+</script>
 </head>
 <body>
 <form method="post" action="ProcessUser.php">
-Fisrt Name :<br />
-<input type="text" name="fname">
+First Name :<br />
+<input type="text" name="fname" id="fname">
 <br /><br />
 Last Name :<br />
-<input type="text" name="lname">
+<input type="text" name="lname" id="lname">
 <br /><br />
 Email address:<br />
-<input type="text" name="email">
+<input type="text" name="email" id="email">
 <br /><br />
 Username :<br />
-<input type="text" name="username">
+<input type="text" name="username" id="username">
 <br /><br />
 Password:<br />
-<input type="password" name="password">
+<input type="password" name="password" id="password">
 <br /><br />
 Zip :<br />
-<input type="text" name="zip">
+<input type="text" name="zip" id="zip">
 <br /><br />
 Birthday :<br />
-<input type="text" name="birthday" id="bithday"><button id="trigger">pick date</button>
+<input type="text" name="birthday" id="birthday"><button id="trigger">pick date</button>
 <br /><br />
 Gender :<br />
 <select name="gender" id="gender">
@@ -51,22 +126,22 @@ Gender :<br />
   </SELECT><br /><br /><br />-->
   
   Security Question 1 :<br />
-<input type="text" name="seq1">
+<input type="text" name="seq1" id="seq1">
 <br /><br />
 Answer 1:<br />
-<input type="text" name="ans1">
+<input type="text" name="ans1" id="ans1">
 <br /><br />
   Security Question 2 :<br />
-<input type="text" name="seq2">
+<input type="text" name="seq2" id="seq2">
 <br /><br />
 Answer 2:<br />
-<input type="text" name="ans2"><br /><br />
-<input type="submit" name="login" value="Submit">
+<input type="text" name="ans2" id="ans2"><br /><br />
+<input type="submit" name="login" value="submit" onClick="return validateForm()">
 </form>
 <script type="text/javascript">
   Calendar.setup(
     {
-      inputField  : "bithday",         // ID of the input field
+      inputField  : "birthday",         // ID of the input field
       ifFormat    : "%Y-%m-%d",    // the date format
       button      : "trigger"       // ID of the button
     }
