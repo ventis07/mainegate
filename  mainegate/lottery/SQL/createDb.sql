@@ -861,6 +861,7 @@ DEFAULT CHARACTER SET = latin1
 COLLATE = latin1_swedish_ci;
 
 ALTER TABLE `lottery_db`.`tbl_users` MODIFY COLUMN `password` VARCHAR(128) CHARACTER SET latin1 DEFAULT NULL;
+ALTER TABLE `lottery_db`.`tbl_users` ADD COLUMN `account_state` INTEGER UNSIGNED NOT NULL DEFAULT 0 AFTER `verifier`;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
