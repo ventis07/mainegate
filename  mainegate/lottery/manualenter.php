@@ -55,7 +55,7 @@ require_once 'classes/user.php';
         z.setDate(z.getDate()-previous);
 
      }
-     alert(z);
+     //alert(z);
      var zz = z.getFullYear()+"-"+(z.getMonth()+1)+"-"+z.getDate();
     document.getElementById("data").value=zz;
 }

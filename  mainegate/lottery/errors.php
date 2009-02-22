@@ -70,8 +70,8 @@ else
 			print 'ASC';?>">
 		Date
 	</td >
-	<td align="center"><a href="errors.php?sort=3 
-	<?php if ($_GET['sort']=='3 ASC')
+	<td align="center"><a href="errors.php?sort=7 
+	<?php if ($_GET['sort']=='7 ASC')
 			print 'DESC';
 		  else
 			print 'ASC';?>">
@@ -107,8 +107,8 @@ else
 			print 'ASC';?>">
 		Date
 	</td >
-	<td align="center"><a href="errors.php?sort=3 
-	<?php if ($_GET['sort']=='3 ASC')
+	<td align="center"><a href="errors.php?sort=7 
+	<?php if ($_GET['sort']=='7 ASC')
 			print 'DESC';
 		  else
 			print 'ASC';?>">
@@ -156,7 +156,8 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 		<?php echo ucfirst($errors_row['reason']) ?>
 	</td>
 	<td>
-		 <a href="<?php echo ucfirst($errors_row['url'])?>"> Go to site
+		 <!--<a href="<?php echo ucfirst($errors_row['url'])?>"> Go to site-->
+		 <a href="javascript:NewWindow('<?php echo $errors_row['url']?>');"> Go to site
 	</td>
 </tr>	
     <?php } ?>
@@ -179,10 +180,12 @@ for($i = 0; $i < $errors_count; $i++){
 		$delete_sql = "DELETE FROM errors WHERE error_id='$del_id[0]'";
 		$result = mysql_query($delete_sql);
 	}
-		$errors_sql = mysql_query("SELECT e.error_id, e.game_id, e.state_id, e.errors, e.game_name, e.reason, s.state_name from
+}
+
+$errors_sql = mysql_query("SELECT e.error_id, e.game_id, e.state_id, e.errors, e.game_name, e.reason, s.state_name from
 		errors e, tbl_state s where e.state_id = s.state_id");
 		$errors_count = mysql_num_rows($errors_sql);
-}
+		
 if ($errors_count == 0)
 {
 echo "No errors.";
@@ -213,7 +216,8 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 		<?php echo ucfirst($errors_row['reason']) ?>
 	</td>
 	<td>
-		 <a href="<?php echo ucfirst($errors_row['url'])?>"> Go to site
+		 <!--<a href="<?php echo ucfirst($errors_row['url'])?>"> Go to site-->
+		 <a href="javascript:NewWindow('<?php echo $errors_row['url']?>');"> Go to site
 	</td>
 <tr>	
 <?php
@@ -328,5 +332,10 @@ function checkUncheckAll(theElement)
 		document.deleteButton.action = "errors.php";
 		document.deleteButton.submit();
     }
+	
+	function NewWindow(url){
+		window.open(url);
+	}
+	
 </script>
 </HTML>

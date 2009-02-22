@@ -1,3 +1,8 @@
+<script type="text/javascript">
+	function NewWindow(url){
+		window.open(url);
+	}
+</script>
 <?php
 
 include "functions/global.php";
@@ -39,7 +44,10 @@ if (isset($_POST[ide])){
             print '<input type="hidden" name="state'.$i.'" id="state'.$i.'" value="'.$db_items['state_id'].'" />';
             print '<input type="hidden" name="gameid'.$i.'" id="gameid'.$i.'" value="'.$db_items['game_id'].'" />';
             print '<input type="text" name="numbers'.$i.'" id="numbers'.$i.'" />';
-            print '<a href="'.$db_items['url'].'"/> Website Url </a>';
+            //print '<a href="'.$db_items['url'].'"/> Website Url </a>';
+			$url =  "'". $db_items['url'] ."'";
+			print '<a href="javascript:NewWindow('.$url.');"/> Website Url </a>';
+			
             print '</td>';
             print '</tr>';
             $i=$i+1;
