@@ -77,6 +77,7 @@ class class_lotto {
 	{
 		$rerunok = "";
 		$this->re_load_game($gamesid);
+		unset ($this->FilterResult_Numbers);
 		if (count ($this->dbGames) > 0)
 		{
 			foreach ($this->dbGames as $key => $array)
@@ -89,6 +90,8 @@ class class_lotto {
 				  if (!$this->isError)$this->applyFilter();
 				  // call filterresultsorganisetest so it doesnt save error again to database;
 				  if (!$this->isError)$this->FilterResultsOrganiseTest();
+				  
+				  if (!$this->isError)$this->StoreToDBRerun();
 				  
 				  if (!$this->isError)
 					{
@@ -185,6 +188,30 @@ class class_lotto {
                 }
          
          flush ();
+    }
+	
+	
+	function test()
+	{}
+	 //*********
+    // Set-up the Parse URL 
+   function StoreToDBRerun ()
+    {
+
+         
+         $myLastDate =  $this->GetLastRecordDate ($this->CurrentGame['id']);
+         if ($myLastDate != $this->FilterResult_Date)
+            { 
+                $this->CurrentSQL   =  "INSERT INTO `".DB_TABLES_GAMES_PLAYED."` (`id`,`state_id`,`date`, `number`) VALUES ('". $this->CurrentGame['id']  ."','". $this->CurrentGame['state_id']  ."','". $this->FilterResult_Date  ."', '". $this->FilterResult_Numbers  ."')";
+                                $my_db_query  =   mysql_query($this->CurrentSQL) or test();
+                echo "<br /> Stored witin DB at " . DB_TABLES_GAMES_PLAYED . "_id";
+            }
+         
+         else 
+            {
+                echo "<br /> Already exists";
+            }
+         
     }
    
     //*********
