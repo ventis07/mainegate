@@ -1,8 +1,3 @@
-<script type="text/javascript">
-	function NewWindow(url){
-		window.open(url);
-	}
-</script>
 <?php
 
 include "functions/global.php";
@@ -22,7 +17,7 @@ mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
 VALUES ('$formdata[0]', '$formdata[3]','$formdata[2]', '$numbers', '$_POST[data]')") or die(mysql_error());
 print '<p> The data has been succesfully saved </p><a href="index.php">back to index</a>';
 }
-
+ 
 
 
 if (isset($_POST[ide])){
@@ -33,7 +28,7 @@ if (isset($_POST[ide])){
     print'<table>';
     foreach ($errordata as $value){
 
-            $selectquery = mysql_query("SELECT e.state_id,e.game_id,g.game_name,e.errors,g.url FROM errors e inner join game_info g on e.game_id=g.id WHERE error_id='$value'");
+            $selectquery = mysql_query("SELECT e.state_id,e.game_id,g.game_name,e.errors,g.url,g.spots FROM errors e inner join game_info g on e.game_id=g.id WHERE error_id='$value'");
             $db_items = mysql_fetch_assoc($selectquery);
 
             print '<tr>';
@@ -43,11 +38,16 @@ if (isset($_POST[ide])){
             print '<td>';
             print '<input type="hidden" name="state'.$i.'" id="state'.$i.'" value="'.$db_items['state_id'].'" />';
             print '<input type="hidden" name="gameid'.$i.'" id="gameid'.$i.'" value="'.$db_items['game_id'].'" />';
-            print '<input type="text" name="numbers'.$i.'" id="numbers'.$i.'" />';
+            print '<input type="hidden" name="numbers'.$i.'" id="numbers'.$i.'" />';
             //print '<a href="'.$db_items['url'].'"/> Website Url </a>';
 			$url =  "'". $db_items['url'] ."'";
+			for($j = 0; $j < $db_items['spots']; $j++)
+			{
+				print '<input onBlur="update('.$db_items['game_id'].',\'numbers'.$i.'\')" type="text" id="spot'.$j.'_'.$db_items['game_id'].'" name="spot'.$j.'" style="width:20px" />&nbsp;';
+			}
+			print '</td>';
+			print '<td>';
 			print '<a href="javascript:NewWindow('.$url.');"/> Website Url </a>';
-			
             print '</td>';
             print '</tr>';
             $i=$i+1;
@@ -63,11 +63,28 @@ if ((isset($_POST[numbers0])) && (isset($_POST[gameid0]))){
         $numbers=$_POST['numbers'.$i];
         $gameid=$_POST['gameid'.$i];
         $state= $_POST['state'.$i];
-        var_dump(mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
-    VALUES ('$gameid', '$state',now(), '$numbers', now())") or die(mysql_error()));
+        mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
+		VALUES ('$gameid', '$state',now(), '$numbers', now())") or die(mysql_error());
         $i=$i+1;
 }
 echo("All changes saved succesfully");
 print '<a href="index.php"> back to index </a>';
 }
 ?>
+<script type="text/javascript">
+	function NewWindow(url){
+		window.open(url);
+	}
+	
+	function update(id, number)
+	{
+		i = 0;
+		document.getElementById(number).value = "";
+		while (document.getElementById('spot'+i.toString()+"_"+id) != null)
+		{
+			document.getElementById(number).value += document.getElementById('spot'+i.toString()+"_"+id).value;
+			i++;
+		}
+	}
+	
+</script>
