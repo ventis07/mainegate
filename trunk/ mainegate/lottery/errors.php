@@ -43,7 +43,7 @@ else
 </tr>
 <tr>
 	<td>
-		<input name="delete" type="submit" id="delete" value="Delete" onclick="Delete(this)">
+		<input name="delete" type="submit" id="delete" value="Delete" onclick="return Delete(this)">
 	</td>
 	<td>
 		<input name="rerun" type="button" id="rerun" value="ReRun" onclick="Rerungame(this)">
@@ -235,7 +235,7 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 <table>
 <tr>
 	<td>
-		<input name="delete" type="submit" id="delete" value="Delete" onclick="Delete()">
+		<input name="delete" type="submit" id="delete" value="Delete" onclick="return Delete(this)">
 	</td>
 	<td>
 		<input name="rerun" type="button" id="rerun" value="ReRun" onclick="Rerungame(this)">
@@ -341,9 +341,18 @@ function checkUncheckAll(theElement)
 		}
 	}
 
-	function Delete(){
-		document.deleteButton.action = "errors.php";
-		document.deleteButton.submit();
+	function Delete(theElement){
+		var x = "";
+		var theForm = theElement.form, z = 0;
+		for(z=0; z<theForm.length;z++)
+		{
+			if(theForm[z].type == 'checkbox' && theForm[z].checked  && theForm[z].id != "chkSelectAll")
+			{
+				return true;
+			}
+		}
+		alert("Please select an error");
+		return false;
     }
 	
 	function NewWindow(url){
