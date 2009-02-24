@@ -3,8 +3,8 @@
 define("DB_HOST", "localhost");
 //define("CONN_PORT", 3306, TRUE);
 define("DB_USER", "root");
-define("DB_PASS", "ncc1701");
-define("DB_NAME", "mainegate");
+define("DB_PASS", "");
+define("DB_NAME", "lottery_db");
 define("MAX_LOGIN",3);
 define("EMAILLOGERRORS","remix@adinet.com.uy");
 
