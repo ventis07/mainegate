@@ -50,10 +50,12 @@ else
 	</td>
 	<td>
 		<input name="rerun" type="button" id="rerun" value="Edit Number" onclick="EditNumbers(this)">
-	</td>	
-	<td>
+		&nbsp;&nbsp;&nbsp;
 		<span id="progress_indicator" style="display: none; position:absolute;">
 		<img src="./resources/wait.gif" alt="Working..." /></span>
+		<input type="hidden" id="ide" name="ide"/>
+	</td>	
+	<td>
 	</td>			
 </tr>	
 </table>
@@ -139,7 +141,7 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 
 ?>
 <? if(!$_POST['delete']){ ?>
-<tr>
+<tr id="row_<?php echo($errors_row['game_id'])?>">
 	<td>
 		<input name="checkbox[]" type="checkbox" id="checkbox[]" value="<?php echo $errors_row['error_id'] .",". $errors_row['game_id'] ; ?>">
 	</td>
@@ -199,7 +201,7 @@ define ('DTFORMAT', 'm-d-Y @ h:i:s');
 $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 
 ?>
-<tr>
+<tr id="row_<?php echo($errors_row['game_id'])?>">
 	<td>
 		<input name="checkbox[]" type="checkbox" id="checkbox[]" value="<?php echo $errors_row['error_id'] .",". $errors_row['game_id'] ; ?>">
 	</td>
@@ -240,11 +242,12 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 	</td>
 	<td>
 		<input name="rerun" type="button" id="rerun" value="Edit Number" onclick="EditNumbers(this)">
-	</td>	
-	<td>
-		<span id="progress_indicator" style="display: none; position:absolute;">
+		&nbsp;&nbsp;&nbsp;
+		<span id="progress_indicator_bottom" style="display: none; position:absolute;">
 		<img src="./resources/wait.gif" alt="Working..." /></span>
 		<input type="hidden" id="ide" name="ide"/>
+	</td>	
+	<td>
 	</td>			
 </tr>
 <tr>
@@ -291,6 +294,7 @@ function checkUncheckAll(theElement)
 		}
 		
 		$('progress_indicator').style.display = '';
+		$('progress_indicator_bottom').style.display = '';
 		if(x!="," && x!="")
 		{
 			new Ajax.Request('./_RerunGames.php',
@@ -298,12 +302,21 @@ function checkUncheckAll(theElement)
 								 onSuccess: function(t)
 								{
 									$('progress_indicator').style.display = 'none';
+									$('progress_indicator_bottom').style.display = 'none';
 									document.getElementById('errorsdiv').innerHTML = t.responseText;
-									//alert(t.responseText);
+									var resdiv = document.getElementById('rerunok');
+									var res = resdiv.innerHTML;
+									var j = res.split(",");
+									for ( id = 0; id < j.length; id ++ )
+									{
+										while (document.getElementById("row_" + j[id].toString()) != null)
+											document.getElementById("row_" + j[id].toString()).remove();
+									}
 								}});
 		}
 		else		
 			$('progress_indicator').style.display = 'none';
+			$('progress_indicator_bottom').style.display = 'none';
     }
 	
 	function EditNumbers(theElement)

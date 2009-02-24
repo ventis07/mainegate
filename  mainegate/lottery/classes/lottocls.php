@@ -75,8 +75,48 @@ class class_lotto {
 		
 	function reRunGames($gamesid)
 	{
+		$rerunok = "";
 		$this->re_load_game($gamesid);
-		$this->ParseGames();
+		if (count ($this->dbGames) > 0)
+		{
+			foreach ($this->dbGames as $key => $array)
+				{
+				  $this->isError = FALSE;
+				  if (!$this->isError) $this->SetUpCurrentGame($array['id']);                            
+				  
+				  if (!$this->isError)$this->grabPage();
+				  if (!$this->isError)$this->data_organise();
+				  if (!$this->isError)$this->applyFilter();
+				  // call filterresultsorganisetest so it doesnt save error again to database;
+				  if (!$this->isError)$this->FilterResultsOrganiseTest();
+				  
+				  if (!$this->isError)
+					{
+						if (isset($this->FilterResult_Numbers))
+							$rerunok = $rerunok . $this->CurrentGame['id'] . ",";
+						
+						
+						 echo "<br />Game Name:" . $this->CurrentGame['game_name'] . "- ID ". $this->CurrentGame['id'] ."<br />"; 
+						 echo $this->FilterResult_Date . " " . $this->FilterResult_Numbers;
+						 echo "<hr />";
+						 unset ($this->FilterResult_Date);
+						 unset ($this->FilterResult_Numbers);
+					}
+					else 
+					{
+						echo "<br />There's been an error parsing the data for Game Name:" . $this->CurrentGame['game_name'] . "- ID ". $this->CurrentGame['id'] ."<br />Skip"; 
+						 echo "<hr />";  
+					}
+		         
+		         flush ();
+				}
+		}
+		$rerunok = $rerunok . "0";
+		echo "<div id='rerunok' style='display:none'>" . $rerunok . "</div>";
+		// delete sucessfully rerunned errors
+		$this->CurrentSQL   =  "INSERT INTO `".DB_TABLES_GAMES_PLAYED."` (`id`,`state_id`,`date`, `number`) VALUES ('". $this->CurrentGame['id']  ."','". $this->CurrentGame['state_id']  ."','". $this->FilterResult_Date  ."', '". $this->FilterResult_Numbers  ."')";
+		$my_db_query  =   mysql_query("delete from errors where game_id in (". $rerunok .")") or $this->error_toDB();
+		
 	}
 		
 	function testRegularExpression($gameid, $regexp)
@@ -266,36 +306,46 @@ class class_lotto {
         {
 			
             if (count ($this->FilterResult) > 0)
-			{
-				// no need for this element
-				unset ($this->FilterResult[0]);
-				
-				foreach ($this->FilterResult as $key => $value)
-					{
-						 $this->FilterResult[$key] = trim ($value);
-					}
-					
-				$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
-				unset ($this->FilterResult[1]);
-				
-				$myNumber = "";
-				foreach  ($this->FilterResult as $key => $value)
-					{
-						
-						if (strlen($value)==1) {$value = "0".$value;}
-						
-						if (strlen($myNumber)>0) {$myNumber .=  NUMBERS_COMMA . $value;}
-										else {$myNumber .=  "$value";}
-					}
+                {
+                    // no need for this element
+                    unset ($this->FilterResult[0]);
 
-			   $this->FilterResult_Numbers = $myNumber;
-			   unset ($this->FilterResult);
+                    foreach ($this->FilterResult as $key => $value)
+                    {
+                             $this->FilterResult[$key] = trim ($value);
+                    }
+                   	if(isset($this->FilterResult['date']))
+					{
+						$this->FilterResult['date'] = str_replace('-','/',$this->FilterResult['date']);
+						$this->FilterResult_Date = date('m/d/Y', strtotime($this->FilterResult['date']));
+						unset ($this->FilterResult['date']);
+						unset ($this->FilterResult[count($this->FilterResult)]);
+					}
+					else
+					{
+						$this->FilterResult[1] = str_replace('-','/',$this->FilterResult[1]);
+						$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
+						unset ($this->FilterResult[1]);
+                    }
 
-			}
+                    $myNumber = "";
+                    foreach  ($this->FilterResult as $key => $value)
+                    {
+
+                            if (strlen($value)==1) {$value = "0".$value;}
+
+                            if (strlen($myNumber)>0) {$myNumber .=  NUMBERS_COMMA . $value;}
+                                            else {$myNumber .=  "$value";}
+                    }
+
+                   $this->FilterResult_Numbers = $myNumber;
+                   unset ($this->FilterResult);
+
+                }
             else
-			{
-				echo ("No matches, the page had been changed or the patern fail");                
-			}
+                {
+                    echo ("No matches, the page had been changed or the patern fail");
+                }
         }
         
         
