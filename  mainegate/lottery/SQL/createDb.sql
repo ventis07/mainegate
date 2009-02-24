@@ -731,11 +731,11 @@ INSERT INTO `tbl_state` VALUES(59, 'Tristate');
 INSERT INTO `tbl_state` VALUES(60, 'Illinois');
 INSERT INTO `tbl_state` VALUES(61, 'Minnesota');
 INSERT INTO `tbl_state` VALUES(62, 'Puerto Rico');
--- INSERT INTO `tbl_state` VALUES(63, 'Hot Lotto Sizzler');
--- INSERT INTO `tbl_state` VALUES(64, 'Multi-state Win For Life');
--- INSERT INTO `tbl_state` VALUES(65, '2by2');
--- INSERT INTO `tbl_state` VALUES(66, 'Wild Card 2');
--- INSERT INTO `tbl_state` VALUES(67, 'Powerball');
+ INSERT INTO `tbl_state` VALUES(63, 'Hot Lotto Sizzler');
+ INSERT INTO `tbl_state` VALUES(64, 'Multi-state Win For Life');
+ INSERT INTO `tbl_state` VALUES(65, '2by2');
+ INSERT INTO `tbl_state` VALUES(66, 'Wild Card 2');
+ INSERT INTO `tbl_state` VALUES(67, 'Powerball');
 
 --
 -- Constraints for dumped tables
