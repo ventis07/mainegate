@@ -245,7 +245,7 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 		&nbsp;&nbsp;&nbsp;
 		<span id="progress_indicator_bottom" style="display: none; position:absolute;">
 		<img src="./resources/wait.gif" alt="Working..." /></span>
-		<input type="hidden" id="ide" name="ide"/>
+		<!--<input type="hidden" id="ide" name="ide"/>-->
 	</td>	
 	<td>
 	</td>			
