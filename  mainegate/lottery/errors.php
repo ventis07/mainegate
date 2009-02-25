@@ -45,7 +45,7 @@ else
 	<td>
 		<input name="rerun" type="button" id="rerun" value="Edit Number" onclick="EditNumbers(this)">
 		&nbsp;&nbsp;&nbsp;
-		<span id="progress_indicator" style="display: none; position:absolute;">
+		<span id="progress_indicator" name="progress_indicator" style="display: none; position:absolute;">
 		<img src="./resources/wait.gif" alt="Working..." /></span>
 		<input type="hidden" id="ide" name="ide"/>
 	</td>	
@@ -244,7 +244,7 @@ if ($errors_count == 0)
 	<td>
 		<input name="rerun" type="button" id="rerun" value="Edit Number" onclick="EditNumbers(this)">
 		&nbsp;&nbsp;&nbsp;
-		<span id="progress_indicator_bottom" style="display: none; position:absolute;">
+		<span id="progress_indicator_bottom" name="progress_indicator_bottom" style="display: none; position:absolute;">
 		<img src="./resources/wait.gif" alt="Working..." /></span>
 	</td>	
 	<td>
@@ -309,13 +309,17 @@ function checkUncheckAll(theElement)
 									for ( id = 0; id < j.length; id ++ )
 									{
 										while (document.getElementById("row_" + j[id].toString()) != null)
+										{
+											document.getElementById("row_" + j[id].toString()).style.display='none';
 											document.getElementById("row_" + j[id].toString()).remove();
+										}
 									}
 								}});
-		}
-		else		
-			$('progress_indicator').style.display = 'none';
+								$('progress_indicator').style.display = 'none';
 			$('progress_indicator_bottom').style.display = 'none';
+		}
+		//else		
+			
     }
 	
 	function EditNumbers(theElement)
@@ -350,7 +354,7 @@ function checkUncheckAll(theElement)
 				return true;
 			}
 		}
-		alert("Please select an error");
+		//alert("Please select an error");
 		return false;
     }
 	
