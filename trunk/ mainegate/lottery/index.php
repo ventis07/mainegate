@@ -31,7 +31,7 @@ require_once('functions/global.php');
   
   
   // Close connection
-  disconnect ();
+  //disconnect ();
   
   If (count($myLottery->ErrorMessages)  > 0 ) 
     {
