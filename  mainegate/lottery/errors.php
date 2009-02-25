@@ -311,15 +311,17 @@ function checkUncheckAll(theElement)
 										while (document.getElementById("row_" + j[id].toString()) != null)
 										{
 											try {
-												document.getElementById("mainTable").deleteRow(document.getElementById("row_" + j[id].toString()));
-											} catch (e1) {}
-											try {
-												document.getElementById("mainTable").deleteRow(document.getElementById("row_" + j[id].toString()).rowIndex);
-											} catch (e1) {}
-											try {
 												document.getElementById("row_" + j[id].toString()).remove();
 											}
-											catch (e2) {}
+											catch (e2){
+											try {
+												document.getElementById("mainTable").deleteRow(document.getElementById("row_" + j[id].toString()).rowIndex);
+												ok = true;
+											} catch (e1)
+											{
+												
+											}
+											}
 										}
 									}
 								}});
