@@ -96,5 +96,18 @@ if ($admin == '1') {   // If User Is An Admin
   print '<br /><br />';
   print '<a href="forgotpassword.html">Forgot password</a>';
 } }
+
+function send_errors ($subject,$message) 
+{
+
+    $message = "One or more errors occour <br />" . $message;
+    
+    global $myErrorsToEmailAddress, $myServerEmailAddress;
+    
+    $mail_body = "$message"; //mail body 
+
+    mail_to ($myServerEmailAddress, $myErrorsToEmailAddress, $subject, $mail_body);
+
+}
 ?>
 
