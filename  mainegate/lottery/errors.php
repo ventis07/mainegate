@@ -28,12 +28,6 @@ else
 	$errors_count = mysql_num_rows($errors_sql);
 }
 
-if ($errors_count == 0)
-{
-echo "No errors.";
-}
-else
-{
 ?>
 <table>
 <tr>
@@ -61,7 +55,7 @@ else
 </table>
 <table id="mainTable" width="100%">
 
-<? if (!$_POST['delete']){ ?>
+<? if (!$_POST['delete'] && $errors_count > 0){ ?>
 <tr>
 	<td>
 	</td>
@@ -96,43 +90,7 @@ else
 </tr>
 <?php
 }
-else
-{
-?>
-<tr>
-	<td>
-	</td>	
-	<td align="center" width="20%"><a href="errors.php?sort=4 
-	<?php if ($_GET['sort']=='4 ASC')
-			print 'DESC';
-		  else
-			print 'ASC';?>">
-		Date
-	</td >
-	<td align="center"><a href="errors.php?sort=7 
-	<?php if ($_GET['sort']=='7 ASC')
-			print 'DESC';
-		  else
-			print 'ASC';?>">
-		State
-	</td>
-	<td align="center"><a href="errors.php?sort=5 
-	<?php if ($_GET['sort']=='5 ASC')
-			print 'DESC';
-		  else
-			print 'ASC';?>">
-		Game Name
-	</td>
-	<td align="center"><a href="errors.php?sort=6 
-	<?php if ($_GET['sort']=='6 ASC')
-			print 'DESC';
-		  else
-			print 'ASC';?>">
-		Error Message
-	</td>
-</tr>
-<?
-}
+
 while($errors_row = mysql_fetch_array($errors_sql))
 {
 
@@ -165,7 +123,7 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
     <?php } ?>
 <?php
 }
-}
+//}
 ?>
 <!--
 <tr>
@@ -190,10 +148,48 @@ $errors_sql = mysql_query("SELECT e.error_id, e.game_id, e.state_id, e.errors, e
 		
 if ($errors_count == 0)
 {
-echo "No errors.";
+	//echo "No errors.";
 }
 else
 {
+
+if($errors_count > 0)
+{
+?>
+<tr>
+	<td>
+	</td>	
+	<td align="center" width="20%"><a href="errors.php?sort=4 
+	<?php if ($_GET['sort']=='4 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
+		Date
+	</td >
+	<td align="center"><a href="errors.php?sort=7 
+	<?php if ($_GET['sort']=='7 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
+		State
+	</td>
+	<td align="center"><a href="errors.php?sort=5 
+	<?php if ($_GET['sort']=='5 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
+		Game Name
+	</td>
+	<td align="center"><a href="errors.php?sort=6 
+	<?php if ($_GET['sort']=='6 ASC')
+			print 'DESC';
+		  else
+			print 'ASC';?>">
+		Error Message
+	</td>
+</tr>
+<?
+}
 while($errors_row = mysql_fetch_array($errors_sql))
 {
 
@@ -229,9 +225,14 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 
 <?
 }
+if ($errors_count == 0)
+{
+	echo "No errors.";
+}
 ?>
 </table>
 <br/>
+<?php if ($errors_count > 0){ ?>
 <table>
 <tr>
 	<td>
@@ -245,7 +246,6 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 		&nbsp;&nbsp;&nbsp;
 		<span id="progress_indicator_bottom" style="display: none; position:absolute;">
 		<img src="./resources/wait.gif" alt="Working..." /></span>
-		<!--<input type="hidden" id="ide" name="ide"/>-->
 	</td>	
 	<td>
 	</td>			
@@ -256,7 +256,7 @@ $converteddate =  date (DTFORMAT, strtotime ($errors_row["errors"]));
 	</td>	
 </tr>
 </table>
-
+<? } ?>
 </form>
 <div id="errorsdiv" style="width:100%; border:1px solid black"></div>
 <body>
@@ -292,11 +292,10 @@ function checkUncheckAll(theElement)
 		{
 			x = x + "0";
 		}
-		
-		$('progress_indicator').style.display = '';
-		$('progress_indicator_bottom').style.display = '';
 		if(x!="," && x!="")
 		{
+			$('progress_indicator').style.display = '';
+			$('progress_indicator_bottom').style.display = '';
 			new Ajax.Request('./_RerunGames.php',
 								{asynchronous:false, parameters:'id=' + x,
 								 onSuccess: function(t)
@@ -355,7 +354,8 @@ function checkUncheckAll(theElement)
 		return false;
     }
 	
-	function NewWindow(url){
+	function NewWindow(url)
+	{
 		window.open(url);
 	}
 	
