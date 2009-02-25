@@ -26,7 +26,7 @@ if (isset($_SESSION['user']) && ($admin==1 || $admin==2)) {
 		$(progress_indicator).style.display = '';
 		topost = document.getElementById('playgame').serialize(document.getElementById('txtexpression').value);
 		new Ajax.Request('./_testexpression.php',
-	                        {asynchronous:false, postBody:topost,
+	                        {asynchronous:true, postBody:topost,
 	                         onSuccess: function(t)
 							{
 								$(progress_indicator).style.display = 'none';
@@ -40,7 +40,7 @@ if (isset($_SESSION['user']) && ($admin==1 || $admin==2)) {
 		$(progress_indicator).style.display = '';
 		topost = document.getElementById('playgame').serialize(document.getElementById('txtexpression').value);
 		new Ajax.Request('./_saveexpression.php',
-	                        {asynchronous:false, postBody:topost,
+	                        {asynchronous:true, postBody:topost,
 	                         onSuccess: function(t)
 							{
 								$(progress_indicator).style.display = 'none';
@@ -53,7 +53,7 @@ if (isset($_SESSION['user']) && ($admin==1 || $admin==2)) {
 		x = x.options[x.selectedIndex].value;
 		$(user_list_indicator).style.display = '';
 		new Ajax.Request('./_getexpression.php',
-	                        {asynchronous:false, parameters:'id=' + x,
+	                        {asynchronous:true, parameters:'id=' + x,
 	                         onSuccess: function(t)
 							{
 								$(user_list_indicator).style.display = 'none';

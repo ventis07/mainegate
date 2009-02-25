@@ -297,7 +297,7 @@ function checkUncheckAll(theElement)
 			$('progress_indicator').style.display = '';
 			$('progress_indicator_bottom').style.display = '';
 			new Ajax.Request('./_RerunGames.php',
-								{asynchronous:false, parameters:'id=' + x,
+								{asynchronous:true, parameters:'id=' + x,
 								 onSuccess: function(t)
 								{
 									$('progress_indicator').style.display = 'none';
@@ -310,13 +310,19 @@ function checkUncheckAll(theElement)
 									{
 										while (document.getElementById("row_" + j[id].toString()) != null)
 										{
-											document.getElementById("row_" + j[id].toString()).style.display='none';
-											document.getElementById("row_" + j[id].toString()).remove();
+											try {
+												document.getElementById("mainTable").deleteRow(document.getElementById("row_" + j[id].toString()));
+											} catch (e1) {}
+											try {
+												document.getElementById("mainTable").deleteRow(document.getElementById("row_" + j[id].toString()).rowIndex);
+											} catch (e1) {}
+											try {
+												document.getElementById("row_" + j[id].toString()).remove();
+											}
+											catch (e2) {}
 										}
 									}
 								}});
-								$('progress_indicator').style.display = 'none';
-			$('progress_indicator_bottom').style.display = 'none';
 		}
 		//else		
 			
