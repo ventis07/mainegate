@@ -91,14 +91,10 @@ class class_lotto {
 				  // call filterresultsorganisetest so it doesnt save error again to database;
 				  if (!$this->isError)$this->FilterResultsOrganiseTest();
 				  
-				  if (!$this->isError)$this->StoreToDBRerun();
+				  if (!$this->isError)$this->StoreToDBRerun($rerunok);
 				  
 				  if (!$this->isError)
 					{
-						if (isset($this->FilterResult_Numbers))
-							$rerunok = $rerunok . $this->CurrentGame['id'] . ",";
-						
-						
 						 echo "<br />Game Name:" . $this->CurrentGame['game_name'] . "- ID ". $this->CurrentGame['id'] ."<br />"; 
 						 echo $this->FilterResult_Date . " " . $this->FilterResult_Numbers;
 						 echo "<hr />";
@@ -195,7 +191,7 @@ class class_lotto {
 	{}
 	 //*********
     // Set-up the Parse URL 
-   function StoreToDBRerun ()
+   function StoreToDBRerun (&$rerunok)
     {
 
          
@@ -205,6 +201,7 @@ class class_lotto {
                 $this->CurrentSQL   =  "INSERT INTO `".DB_TABLES_GAMES_PLAYED."` (`id`,`state_id`,`date`, `number`) VALUES ('". $this->CurrentGame['id']  ."','". $this->CurrentGame['state_id']  ."','". $this->FilterResult_Date  ."', '". $this->FilterResult_Numbers  ."')";
                                 $my_db_query  =   mysql_query($this->CurrentSQL) or test();
                 echo "<br /> Stored witin DB at " . DB_TABLES_GAMES_PLAYED . "_id";
+				$rerunok . $this->CurrentGame['id'] . ",";
             }
          
          else 
