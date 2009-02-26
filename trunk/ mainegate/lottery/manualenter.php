@@ -12,6 +12,23 @@ require_once 'classes/user.php';
 
 	function validate()
 	{
+		var myDate=new Date();
+		var x = document.getElementById("data");
+		var year = x.value.split("-")[0];
+		var month = x.value.split("-")[1] - 1;
+		var day = x.value.split("-")[2];
+		
+		//myDate.setFullYear(year,month,day);
+		myDate.setFullYear(year);
+		myDate.setDate(day);
+		myDate.setMonth(month);
+		
+		if (myDate > new Date())
+		{
+			alert("date cannot be grater than today");
+			return false;
+		}
+		
 		var x = document.body.getElementsByTagName("input");
 		for (var i=0; i<x.length; i++)
 		{
@@ -138,7 +155,7 @@ SqlConnect();
    ?>
   </SELECT>
   <br/>
-  <input type="text" id="data" name="data" />
+  <input type="text" id="data" name="data" disabled style="background-color:white; border:1px solid #7F9DB9" />
   <button id="trigger">pick date</button>
   <input type="submit" id="play" value="Save" onClick="return validate()">
   <div id="createTextbox"></div>
