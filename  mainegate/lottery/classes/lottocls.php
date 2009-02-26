@@ -201,7 +201,7 @@ class class_lotto {
                 $this->CurrentSQL   =  "INSERT INTO `".DB_TABLES_GAMES_PLAYED."` (`id`,`state_id`,`date`, `number`) VALUES ('". $this->CurrentGame['id']  ."','". $this->CurrentGame['state_id']  ."','". $this->FilterResult_Date  ."', '". $this->FilterResult_Numbers  ."')";
                                 $my_db_query  =   mysql_query($this->CurrentSQL) or test();
                 echo "<br /> Stored witin DB at " . DB_TABLES_GAMES_PLAYED . "_id";
-				$rerunok . $this->CurrentGame['id'] . ",";
+				$rerunok = $rerunok . $this->CurrentGame['id'] . ",";
             }
          
          else 
