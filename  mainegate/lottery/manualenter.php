@@ -12,6 +12,20 @@ require_once 'classes/user.php';
 
 	function validate()
 	{
+		var x = document.body.getElementsByTagName("input");
+		for (var i=0; i<x.length; i++)
+		{
+			current = x[i];
+			if (current.type== "text") {
+				if (current.value == "")
+				{
+					alert("Cannot insert empty fields");
+					current.focus();
+					return false;
+				}
+			}
+		}
+		
 		var x = document.getElementById("state");
 		if (x.options[x.selectedIndex].value == -1)
 		{
