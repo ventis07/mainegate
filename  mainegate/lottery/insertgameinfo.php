@@ -11,8 +11,9 @@ if ($_POST)
 
 $from = $_POST['from'];
 $to =  $_POST['to'];
-mysql_query("INSERT INTO game_info (game_name,time,occurance,url,spots) 
-VALUES ('$_POST[game_name]', '$_POST[time]', '$_POST[occurance]','$_POST[url]', '$_POST[spots]')") or die(mysql_error()); 
+
+mysql_query("INSERT INTO game_info (game_name,time,occurance,url,spots,`from`,`to`) 
+VALUES ('$_POST[game_name]', '$_POST[time]', '$_POST[occurance]','$_POST[url]', '$_POST[spots]', $from, $to)") or die(mysql_error()); 
 $insertid = mysql_insert_id();
 foreach($_POST['state'] as $value){
 	mysql_query("INSERT INTO rtblgame (id,state_id)
