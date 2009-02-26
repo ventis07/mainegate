@@ -91,7 +91,7 @@ function validateInt(event,x)
    
    function validateLength(x)
    {
-	  if(document.getElementById(x).value.length=1 && document.getElementById(x).value != "")
+	  if(document.getElementById(x).value.length<2 && document.getElementById(x).value != "")
 	  {
 		document.getElementById(x).value = "0" + document.getElementById(x).value;
 		return true;
