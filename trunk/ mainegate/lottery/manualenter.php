@@ -10,7 +10,22 @@ require_once 'classes/user.php';
 <script type="text/javascript">
 
 
+	function validate()
+	{
+		var x = document.getElementById("state");
+		if (x.options[x.selectedIndex].value == -1)
+		{
+			alert('Please select a game.');
+			return false;
+		}
+		return true;
+	}
+
     function displayspots(x){
+		if (x.options[x.selectedIndex].value == -1)
+		{
+			document.getElementById("data").value="";
+		}
         var i = 0;
         y=x;
         x=x.options[x.selectedIndex].value.split(",")[1];
@@ -95,6 +110,7 @@ SqlConnect();
 ?>
   <form id="playgame" method="post" action="processgame.php">
    <SELECT name="state[]" id="state"  ONCHANGE="displayspots(this)">
+   <option value="-1">Select a Game</option>
   <?php
     $selectquery = mysql_query("select gi.id,gi.occurance,st.state_name,st.state_id,gi.game_name,gi.spots,(select max(Time) from tbl_gamesplayed where id=gi.id) as Time from game_info gi inner join rtblgame rg on gi.id= rg.id inner join tbl_state st on st.state_id=rg.state_id left join tbl_gamesplayed t on gi.id=t.id and st.state_id=t.state_id order by st.state_name");
     if (mysql_num_rows($selectquery) > 0)
@@ -110,7 +126,7 @@ SqlConnect();
   <br/>
   <input type="text" id="data" name="data" />
   <button id="trigger">pick date</button>
-  <input type="submit" id="play" value="Save">
+  <input type="submit" id="play" value="Save" onClick="return validate()">
   <div id="createTextbox"></div>
   </form>
   <script type="text/javascript">
