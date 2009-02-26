@@ -13,8 +13,11 @@ while (isset($_POST['mytext'.$i])){
     $i=$i+1;
 }
 
+$currentdate = date('Y-m-d h:m:s');
+
+
 mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
-VALUES ('$formdata[0]', '$formdata[3]','$formdata[2]', '$numbers', '$_POST[data]')") or die(mysql_error());
+VALUES ('$formdata[0]', '$formdata[4]','$_POST[data]', '$numbers', '$currentdate')") or die(mysql_error());
 print '<p> The data has been succesfully saved </p><a href="index.php">back to index</a>';
 }
  
