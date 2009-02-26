@@ -17,7 +17,7 @@ require_once 'classes/user.php';
         if (document.getElementById("createTextbox").innerHTML == ""){
         while (i<x)
         {
-            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='mytext"+ i +"' name='mytext"+ i +"' size=3 MAXLENGTH=3 onKeyUp=\"return validateInt(event,'mytext"+i+"')\"/>&nbsp;"
+            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='mytext"+ i +"' name='mytext"+ i +"' size=2 MAXLENGTH=2 onKeyUp=\"return validateInt(event,'mytext"+i+"')\" onBlur=\"return validateLength('mytext"+i+"')\"/>&nbsp;"
             i++;
         }
     }
@@ -25,7 +25,7 @@ require_once 'classes/user.php';
         document.getElementById("createTextbox").innerHTML = "";
         while (i<x)
         {
-            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='mytext"+ i +"' name='mytext"+ i +"' size=3 MAXLENGTH=3 onKeyUp=\"return validateInt(event,'mytext"+i+"')\"/>&nbsp;"
+            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='mytext"+ i +"' name='mytext"+ i +"' size=2 MAXLENGTH=2 onKeyUp=\"return validateInt(event,'mytext"+i+"')\" onBlur=\"return validateLength('mytext"+i+"')\"/>&nbsp;"
             i++;
         }
     }
@@ -61,7 +61,7 @@ require_once 'classes/user.php';
 }
 function validateInt(event,x)
    {
-      var reg= /^(\d{3}|\d{2}|\d{1})$/;
+      var reg= /^(\d{2}|\d{1})$/;
    if (document.getElementById(x).value !== ''){
       if (document.getElementById(x).value.match(reg)){
           //alert(document.getElementById(x).value+' is a number');
@@ -72,6 +72,16 @@ function validateInt(event,x)
           return false;
       }
    }
+   }
+   
+   function validateLength(x)
+   {
+	  if(document.getElementById(x).value.length=1 && document.getElementById(x).value != "")
+	  {
+		document.getElementById(x).value = "0" + document.getElementById(x).value;
+		return true;
+	  }
+	  return false;
    }
 
 </script>
