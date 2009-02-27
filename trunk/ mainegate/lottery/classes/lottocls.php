@@ -293,15 +293,17 @@ class class_lotto {
                     }
                    	if(isset($this->FilterResult['date']))
 					{
-						$this->FilterResult['date'] = str_replace('-','/',$this->FilterResult['date']);
-						$this->FilterResult_Date = date('m/d/Y', strtotime($this->FilterResult['date']));
+						//$this->FilterResult['date'] = str_replace('-','/',$this->FilterResult['date']);
+						$this->FilterResult_Date = date('Y-m-d', strtotime($this->FilterResult['date']));
+						//$this->FilterResult_Date = date('m/d/Y', strtotime($this->FilterResult['date']));
 						unset ($this->FilterResult['date']);
 						unset ($this->FilterResult[count($this->FilterResult)]);
 					}
 					else
 					{
-						$this->FilterResult[1] = str_replace('-','/',$this->FilterResult[1]);
-						$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
+						//$this->FilterResult[1] = str_replace('-','/',$this->FilterResult[1]);
+						$this->FilterResult_Date = date('Y-m-d', strtotime ($this->FilterResult[1]));
+						//$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
 						unset ($this->FilterResult[1]);
                     }
 
@@ -340,15 +342,17 @@ class class_lotto {
                     }
                    	if(isset($this->FilterResult['date']))
 					{
-						$this->FilterResult['date'] = str_replace('-','/',$this->FilterResult['date']);
-						$this->FilterResult_Date = date('m/d/Y', strtotime($this->FilterResult['date']));
+						//$this->FilterResult['date'] = str_replace('-','/',$this->FilterResult['date']);
+						//$this->FilterResult_Date = date('m/d/Y', strtotime($this->FilterResult['date']));
+						$this->FilterResult_Date = date('Y-m-d', strtotime($this->FilterResult['date']));
 						unset ($this->FilterResult['date']);
 						unset ($this->FilterResult[count($this->FilterResult)]);
 					}
 					else
 					{
-						$this->FilterResult[1] = str_replace('-','/',$this->FilterResult[1]);
-						$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
+						//$this->FilterResult[1] = str_replace('-','/',$this->FilterResult[1]);
+						//$this->FilterResult_Date = date('m/d/Y', strtotime ($this->FilterResult[1]));
+						$this->FilterResult_Date = date('Y-m-d', strtotime ($this->FilterResult[1]));
 						unset ($this->FilterResult[1]);
                     }
 
