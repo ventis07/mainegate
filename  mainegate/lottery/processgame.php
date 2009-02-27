@@ -49,28 +49,28 @@ if (isset($_POST[ide])){
 			$url =  "'". $db_items['url'] ."'";
 			for($j = 0; $j < $db_items['spots']; $j++)
 			{
-				print '<input onBlur="update('.$db_items['game_id'].',\'numbers'.$i.'\')" type="text" id="spot'.$j.'_'.$db_items['game_id'].'" name="spot'.$j.'" style="width:20px" />&nbsp;';
+				print '<input onBlur="update('.$j.','.$db_items['game_id'].',\'numbers'.$i.'\')" type="text" id="spot'.$j.'_'.$db_items['game_id'].'" name="spot'.$j.'" style="width:20px" maxlength="2" />&nbsp;';
 			}
 			print '</td>';
 			print '<td>';
 			print '<a href="javascript:NewWindow('.$url.');"/> Website Url </a>';
-            print '</td>';
+            print '</td>';	
             print '</tr>';
             $i=$i+1;
     }
     print '</table>';
-    print '<input type="submit" name="submit" id="submit" value="Submit" />';
+    print '<input type="submit" name="submit" id="submit" value="Submit" onclick="return checkBoxes()"/>';
     print '</form>';
 }
 if ((isset($_POST[numbers0])) && (isset($_POST[gameid0]))){
-
+	$currentdate = date('Y-m-d');
     $i=0;
     while (isset($_POST['numbers'.$i])){
         $numbers=$_POST['numbers'.$i];
         $gameid=$_POST['gameid'.$i];
         $state= $_POST['state'.$i];
         mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
-		VALUES ('$gameid', '$state',now(), '$numbers', now())") or die(mysql_error());
+		VALUES ('$gameid', '$state','$currentdate', '$numbers', now())") or die(mysql_error());
         $i=$i+1;
 }
 echo("All changes saved succesfully");
@@ -82,7 +82,7 @@ print '<a href="index.php"> back to index </a>';
 		window.open(url);
 	}
 	
-	function update(id, number)
+	function update(item, id, number)
 	{
 		i = 0;
 		document.getElementById(number).value = "";
@@ -91,6 +91,34 @@ print '<a href="index.php"> back to index </a>';
 			document.getElementById(number).value += document.getElementById('spot'+i.toString()+"_"+id).value;
 			i++;
 		}
+		validateLength('spot'+item.toString()+"_"+id);
 	}
+	
+   function validateLength(x)
+   {
+	  if(document.getElementById(x).value.length<2 && document.getElementById(x).value != "")
+	  {
+		document.getElementById(x).value = "0" + document.getElementById(x).value;
+		return true;
+	  }
+	  return false;
+   }
+   
+   function checkBoxes()
+   {
+		var x = document.body.getElementsByTagName("input");
+		for (var i=0; i<x.length; i++)
+		{
+			current = x[i];
+			if (current.type== "text") {
+				if (current.value == "")
+				{
+					alert("Cannot insert empty fields");
+					current.focus();
+					return false;
+				}
+			}
+		}
+   }
 	
 </script>

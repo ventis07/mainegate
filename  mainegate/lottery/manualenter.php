@@ -23,6 +23,9 @@ require_once 'classes/user.php';
 		myDate.setDate(day);
 		myDate.setMonth(month);
 		
+		if(month.length<2)
+			month = "0" + month;
+			
 		if (myDate > new Date())
 		{
 			alert("date cannot be grater than today");
@@ -102,7 +105,15 @@ require_once 'classes/user.php';
 
      }
      //alert(z);
-     var zz = z.getFullYear()+"-"+(z.getMonth()+1)+"-"+z.getDate();
+	 var month = z.getMonth()+1;
+	 
+	if(month.toString().length <2)
+	{
+		month = "0" + month;
+	}
+     
+	 var zz = z.getFullYear()+"-"+month+"-"+z.getDate();
+	 
     document.getElementById("data").value=zz;
 }
 function validateInt(event,x)
