@@ -18,6 +18,9 @@ $currentdate = date('Y-m-d h:m:s');
 
 mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
 VALUES ('$formdata[0]', '$formdata[4]','$_POST[data]', '$numbers', '$currentdate')") or die(mysql_error());
+
+mysql_query("UPDATE game_info set last_updated = '$currentdate' where id = '$formdata[0]'") or die (mysql_error());
+
 print '<p> The data has been succesfully saved </p><a href="index.php">back to index</a>';
 }
  
