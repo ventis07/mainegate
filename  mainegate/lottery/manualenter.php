@@ -155,7 +155,7 @@ SqlConnect();
    ?>
   </SELECT>
   <br/>
-  <input type="text" id="data" name="data" disabled style="background-color:white; border:1px solid #7F9DB9" />
+  <input type="text" id="data" name="data" readonly />
   <button id="trigger">pick date</button>
   <input type="submit" id="play" value="Save" onClick="return validate()">
   <div id="createTextbox"></div>
