@@ -49,7 +49,7 @@ if (isset($_POST[ide])){
 			$url =  "'". $db_items['url'] ."'";
 			for($j = 0; $j < $db_items['spots']; $j++)
 			{
-				print '<input onBlur="update('.$j.','.$db_items['game_id'].',\'numbers'.$i.'\')" type="text" id="spot'.$j.'_'.$db_items['game_id'].'" name="spot'.$j.'" style="width:20px" maxlength="2" />&nbsp;';
+				print '<input onKeyUp="return validateInt('.$j.','.$db_items['game_id'].')" onBlur="update('.$j.','.$db_items['game_id'].',\'numbers'.$i.'\')" type="text" id="spot'.$j.'_'.$db_items['game_id'].'" name="spot'.$j.'" style="width:20px" maxlength="2" />&nbsp;';
 			}
 			print '</td>';
 			print '<td>';
@@ -85,13 +85,23 @@ print '<a href="index.php"> back to index </a>';
 	function update(item, id, number)
 	{
 		i = 0;
+		var x = 'spot'+item.toString()+"_"+id;
+		var reg= /^(\d{2}|\d{1})$/;
+		
 		document.getElementById(number).value = "";
 		while (document.getElementById('spot'+i.toString()+"_"+id) != null)
 		{
 			document.getElementById(number).value += document.getElementById('spot'+i.toString()+"_"+id).value;
 			i++;
 		}
-		validateLength('spot'+item.toString()+"_"+id);
+		
+		if(document.getElementById(x).value.length<2 && document.getElementById(x).value != "")
+		{
+			if(document.getElementById(x).value.match(reg))
+				document.getElementById(x).value = "0" + document.getElementById(x).value;
+		}
+		
+		//validateLength('spot'+item.toString()+"_"+id);
 	}
 	
    function validateLength(x)
@@ -119,6 +129,24 @@ print '<a href="index.php"> back to index </a>';
 				}
 			}
 		}
+   }
+   
+   function validateInt(item, id)
+   {
+	  //alert(item);
+      var reg= /^(\d{2}|\d{1})$/;
+   if (document.getElementById('spot'+item.toString()+"_"+id).value !== ''){
+      if (document.getElementById('spot'+item.toString()+"_"+id).value.match(reg)){
+          //alert(document.getElementById(x).value+' is a number');
+          return true;
+      }
+      else {
+		  document.getElementById('spot'+item.toString()+"_"+id).focus();
+          alert(document.getElementById('spot'+item.toString()+"_"+id).value+ ' is not a number');
+		  
+          return false;
+      }
+   }
    }
 	
 </script>
