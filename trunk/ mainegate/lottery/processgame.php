@@ -103,16 +103,6 @@ print '<a href="index.php"> back to index </a>';
 		
 		//validateLength('spot'+item.toString()+"_"+id);
 	}
-	
-   function validateLength(x)
-   {
-	  if(document.getElementById(x).value.length<2 && document.getElementById(x).value != "")
-	  {
-		document.getElementById(x).value = "0" + document.getElementById(x).value;
-		return true;
-	  }
-	  return false;
-   }
    
    function checkBoxes()
    {
