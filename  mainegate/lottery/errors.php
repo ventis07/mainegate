@@ -355,6 +355,10 @@ function checkUncheckAll(theElement)
 	function Delete(theElement){
 		var x = "";
 		var theForm = theElement.form, z = 0;
+		
+		if(document.deleteButton.action != "errors.php")
+			document.deleteButton.action = "errors.php";
+		
 		for(z=0; z<theForm.length;z++)
 		{
 			if(theForm[z].type == 'checkbox' && theForm[z].checked  && theForm[z].id != "chkSelectAll")
