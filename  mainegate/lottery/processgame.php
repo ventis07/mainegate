@@ -13,10 +13,12 @@ while (isset($_POST['mytext'.$i])){
     $i=$i+1;
 }
 
-//$currentdate = date('Y-m-d h:m:s');
-
-mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
-VALUES ('$formdata[0]', '$formdata[4]','$_POST[data]', '$numbers', CURRENT_TIMESTAMP)") or die(mysql_error());
+$result = mysql_query("update tbl_gamesplayed set number='$numbers' where id='$formdata[0]' and state_id = '$formdata[4]'") or die(myslq_error());		 
+if (mysql_affected_rows()==0)
+{
+	mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
+	VALUES ('$formdata[0]', '$formdata[4]','$_POST[data]','$numbers', now())") or die(mysql_error());
+}
 
 //mysql_query("UPDATE game_info set last_updated = '$currentdate' where id = '$formdata[0]'") or die (mysql_error());
 
@@ -62,14 +64,16 @@ if (isset($_POST[ide])){
     print '</form>';
 }
 if ((isset($_POST[numbers0])) && (isset($_POST[gameid0]))){
-	//$currentdate = date('Y-m-d');
+	$currentdate = date('Y-m-d');
+	
     $i=0;
     while (isset($_POST['numbers'.$i])){
         $numbers=$_POST['numbers'.$i];
         $gameid=$_POST['gameid'.$i];
         $state= $_POST['state'.$i];
-        mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
-		VALUES ('$gameid', '$state',CURRENT_TIMESTAMP, '$numbers', now())") or die(mysql_error());
+		
+		mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
+		VALUES ('$gameid','$state','$currentdate','$numbers',now())") or die(mysql_error());
         $i=$i+1;
 }
 echo("All changes saved succesfully");
