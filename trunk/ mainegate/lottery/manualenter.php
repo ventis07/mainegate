@@ -111,13 +111,18 @@ require_once 'classes/user.php';
      }
      //alert(z);
 	 var month = z.getMonth()+1;
+	 var day = z.getDate();
 	 
 	if(month.toString().length <2)
 	{
 		month = "0" + month;
 	}
+	if(day.toString().length <2)
+	{
+		day = "0" + day;
+	}
      
-	 var zz = z.getFullYear()+"-"+month+"-"+z.getDate();
+	 var zz = z.getFullYear()+"-"+month+"-"+day;
 	 
     document.getElementById("data").value=zz;
 }
