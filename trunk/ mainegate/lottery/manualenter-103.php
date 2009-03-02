@@ -3,12 +3,21 @@ include "functions/global.php";
 require_once 'functions/check-user.php';
 require_once 'classes/user.php';
 ?>
+<html>
+<head>
 <link href="js/jscalendar/calendar-win2k-cold-1.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jscalendar/calendar.js"></script>
 <script type="text/javascript" src="js/jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="js/jscalendar/calendar-setup.js"></script>
+<script src="./js/scriptaculous/prototype.js" type="text/javascript"></script>
+<script src="./js/scriptaculous/effects.js" type="text/javascript"></script>
+<script src="./js/scriptaculous/dragdrop.js" type="text/javascript"></script>
+<script src="./js/scriptaculous/controls.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+	var game_id = 0;
+	var game_stateid = 0;
+	var spots = 0;
 
 	function validate()
 	{
@@ -62,25 +71,23 @@ require_once 'classes/user.php';
 		}
         var i = 0;
         y=x;
-		var spotNumber;
-		var number = x.options[x.selectedIndex].value.split(",")[5];
+		game_id = x.options[x.selectedIndex].value.split(",")[0];
+		game_stateid = x.options[x.selectedIndex].value.split(",")[4];
         x=x.options[x.selectedIndex].value.split(",")[1];
-
+		
+		spots = x;
         if (document.getElementById("createTextbox").innerHTML == ""){
         while (i<x)
         {
-			spotNumber = number.substring(2 * i, (2 * i + 2));
-            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input value='"+spotNumber+"' type=text id='mytext"+ i +"' name='mytext"+ i +"' size=2 MAXLENGTH=2 onKeyUp=\"return validateInt(event,'mytext"+i+"')\" onBlur=\"return validateLength('mytext"+i+"')\"/>&nbsp;"
+            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='mytext"+ i +"' name='mytext"+ i +"' size=2 MAXLENGTH=2 onKeyUp=\"return validateInt(event,'mytext"+i+"')\" onBlur=\"return validateLength('mytext"+i+"')\"/>&nbsp;"
             i++;
         }
     }
     else {
         document.getElementById("createTextbox").innerHTML = "";
-        // separa los numeros */********************************
         while (i<x)
         {
-			spotNumber = number.substring(2 * i, (2 * i + 2));
-            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input value='"+spotNumber+"' type=text id='mytext"+ i +"' name='mytext"+ i +"' size=2 MAXLENGTH=2 onKeyUp=\"return validateInt(event,'mytext"+i+"')\" onBlur=\"return validateLength('mytext"+i+"')\"/>&nbsp;"
+            document.getElementById("createTextbox").innerHTML = document.getElementById("createTextbox").innerHTML +"<input type=text id='mytext"+ i +"' name='mytext"+ i +"' size=2 MAXLENGTH=2 onKeyUp=\"return validateInt(event,'mytext"+i+"')\" onBlur=\"return validateLength('mytext"+i+"')\"/>&nbsp;"
             i++;
         }
     }
@@ -108,22 +115,17 @@ require_once 'classes/user.php';
            previous=thisDay-previous;
        }
         z.setDate(z.getDate()-previous);
- 
+
      }
      //alert(z);
 	 var month = z.getMonth()+1;
-	 var day = z.getDate();
 	 
 	if(month.toString().length <2)
 	{
 		month = "0" + month;
 	}
-	if(day.toString().length <2)
-	{
-		day = "0" + day;
-	}
      
-	 var zz = z.getFullYear()+"-"+month+"-"+day;
+	 var zz = z.getFullYear()+"-"+month+"-"+z.getDate();
 	 
     document.getElementById("data").value=zz;
 }
@@ -151,8 +153,29 @@ function validateInt(event,x)
 	  }
 	  return false;
    }
+   
+   function checkDate(d)
+   {
+		dateformat2 = d.split("-")[1] + "/" + d.split("-")[2] + "/" + d.split("-")[0];
+		/*alert(dateformat2);
+		
+		alert(game_id);
+		alert(game_stateid);
+		alert(spots);*/
+		// **************** TRAER LOS NUMEROS CON AJAX *********************
+		new Ajax.Request('./_getnumbers.php',
+	                        {asynchronous:true, parameters:'id=' + game_id + '&state_id=' + game_stateid + '&d1=' + d + '&d2=' + dateformat2,
+	                         onSuccess: function(t)
+							{
+								if (t.responseText != "" && t.responseText.length == spots*2)
+								{
+									//alert("viene bien");
+								}
+							}});
+   }
 
 </script>
+</head>
 <body>
 
 <?php
@@ -165,19 +188,19 @@ SqlConnect();
    <SELECT name="state[]" id="state" ONCHANGE="displayspots(this)">
    <option value="-1">Select a Game</option>
   <?php
-    $selectquery = mysql_query("select distinct(gi.id),gi.occurance,st.state_name,st.state_id,gi.game_name,gi.spots,(select max(Time) from tbl_gamesplayed where id=gi.id) as Time, t.number from game_info gi inner join rtblgame rg on gi.id= rg.id inner join tbl_state st on st.state_id=rg.state_id left join tbl_gamesplayed t on gi.id=t.id and st.state_id=t.state_id order by st.state_name");
+    $selectquery = mysql_query("select gi.id,gi.occurance,st.state_name,st.state_id,gi.game_name,gi.spots,(select max(Time) from tbl_gamesplayed where id=gi.id) as Time from game_info gi inner join rtblgame rg on gi.id= rg.id inner join tbl_state st on st.state_id=rg.state_id left join tbl_gamesplayed t on gi.id=t.id and st.state_id=t.state_id order by st.state_name");
     if (mysql_num_rows($selectquery) > 0)
                 {
                  while ($db_items = mysql_fetch_assoc($selectquery)) {
-                    //echo($db_items['state_id']);
-                    echo "<OPTION VALUE=\"".$db_items['id'].",".$db_items['spots'].",".$db_items['Time'].",".$db_items['occurance'].",".$db_items['state_id'].",".$db_items['number']."\">".$db_items['state_name']." - ".$db_items['game_name']."</OPTION>";
+                     //echo($db_items['state_id']);
+                    echo "<OPTION VALUE=\"".$db_items['id'].",".$db_items['spots'].",".$db_items['Time'].",".$db_items['occurance'].",".$db_items['state_id']."\">".$db_items['state_name']." - ".$db_items['game_name']."</OPTION>";
                  }
 
                 }
    ?>
   </SELECT>
   <br/>
-  <input type="text" id="data" name="data" readonly />
+  <input type="text" id="data" name="data" readonly onChange="checkDate(this.value)" />
   <button id="trigger">pick date</button>
   <input type="submit" id="play" value="Save" onClick="return validate()">
   <div id="createTextbox"></div>
