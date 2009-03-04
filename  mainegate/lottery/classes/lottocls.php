@@ -372,6 +372,7 @@ class class_lotto {
                 }
             else
                 {
+					$this->isError = TRUE;
                     echo ("No matches, the page had been changed or the patern fail");
                 }
         }
