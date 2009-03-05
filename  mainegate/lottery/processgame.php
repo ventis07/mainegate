@@ -93,17 +93,20 @@ print '<a href="index.php"> back to index </a>';
 		var reg= /^(\d{2}|\d{1})$/;
 		
 		document.getElementById(number).value = "";
-		while (document.getElementById('spot'+i.toString()+"_"+id) != null)
-		{
-			document.getElementById(number).value += document.getElementById('spot'+i.toString()+"_"+id).value;
-			i++;
-		}
 		
 		if(document.getElementById(x).value.length<2 && document.getElementById(x).value != "")
 		{
 			if(document.getElementById(x).value.match(reg))
 				document.getElementById(x).value = "0" + document.getElementById(x).value;
 		}
+		
+		while (document.getElementById('spot'+i.toString()+"_"+id) != null)
+		{
+			document.getElementById(number).value += document.getElementById('spot'+i.toString()+"_"+id).value;
+			i++;
+		}
+		
+		
 		
 		//validateLength('spot'+item.toString()+"_"+id);
 	}
