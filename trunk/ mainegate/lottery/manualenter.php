@@ -7,7 +7,15 @@ require_once 'classes/user.php';
 <script type="text/javascript" src="js/jscalendar/calendar.js"></script>
 <script type="text/javascript" src="js/jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="js/jscalendar/calendar-setup.js"></script>
+<script src="./js/scriptaculous/prototype.js" type="text/javascript"></script>
+<script src="./js/scriptaculous/effects.js" type="text/javascript"></script>
+<script src="./js/scriptaculous/dragdrop.js" type="text/javascript"></script>
+<script src="./js/scriptaculous/controls.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+var game_id = 0;
+var game_stateid = 0;
+var spots = 0;
 
 
 	function validate()
@@ -55,11 +63,42 @@ require_once 'classes/user.php';
 		return true;
 	}
 
+	function getnumbers(d){
+		var i = 0;
+		while (i<spots)
+        {
+			//limpiar textboxes
+			document.getElementById('mytext'+i).value='00';
+            i++;
+        }
+		i=0;
+		var dateformat2 = d.split("-")[1] + "/" + d.split("-")[2] + "/" + d.split("-")[0];
+		
+		new Ajax.Request('./_getnumbers.php',
+                {asynchronous:true, parameters:'id=' + game_id + '&state_id=' + game_stateid + '&d1=' + d + '&d2=' + dateformat2,
+                 onSuccess: function(t)
+				{
+					if (t.responseText != "" && t.responseText.length == spots*2)
+					{
+						while (i<spots)
+				        {
+							spotNumber = t.responseText.substring(2 * i, (2 * i + 2));
+							document.getElementById('mytext'+i).value=spotNumber;
+				            i++;
+				        }
+					}
+				}});
+	}
+
+	
     function displayspots(x){
 		if (x.options[x.selectedIndex].value == -1)
 		{
 			document.getElementById("data").value="";
 		}
+		game_id = x.options[x.selectedIndex].value.split(",")[0];
+		game_stateid = x.options[x.selectedIndex].value.split(",")[4];
+		spots = x.options[x.selectedIndex].value.split(",")[1];
         var i = 0;
         y=x;
 		var spotNumber;
@@ -177,7 +216,7 @@ SqlConnect();
    ?>
   </SELECT>
   <br/>
-  <input type="text" id="data" name="data" readonly />
+  <input type="text" id="data" name="data" readonly onchange="getnumbers(this.value)" />
   <button id="trigger">pick date</button>
   <input type="submit" id="play" value="Save" onClick="return validate()">
   <div id="createTextbox"></div>
