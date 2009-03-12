@@ -14,7 +14,7 @@ while (isset($_POST['mytext'.$i])){
 }
 // missing date filter *********************************************** $_POST[data]
 
-$result = mysql_query("update tbl_gamesplayed set number='$numbers' where id='$formdata[0]' and state_id = '$formdata[4]'") or die(myslq_error());		 
+$result = mysql_query("update tbl_gamesplayed set number='$numbers' where id='$formdata[0]' and state_id = '$formdata[4]'and date = '$_POST[data]'") or die(myslq_error());		 
 if (mysql_affected_rows()==0)
 {
 	mysql_query("INSERT INTO tbl_gamesplayed (id,state_id,date,number,Time)
