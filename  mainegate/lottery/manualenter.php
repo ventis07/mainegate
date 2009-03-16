@@ -204,7 +204,7 @@ SqlConnect();
    <SELECT name="state[]" id="state" ONCHANGE="displayspots(this)">
    <option value="-1">Select a Game</option>
   <?php
-    $selectquery = mysql_query("select distinct(gi.id),gi.occurance,st.state_name,st.state_id,gi.game_name,gi.spots,(select max(Time) from tbl_gamesplayed where id=gi.id) as Time, t.number from game_info gi inner join rtblgame rg on gi.id= rg.id inner join tbl_state st on st.state_id=rg.state_id left join tbl_gamesplayed t on gi.id=t.id and st.state_id=t.state_id order by st.state_name");
+    $selectquery = mysql_query("select distinct(gi.id),gi.occurance,st.state_name,st.state_id,gi.game_name,gi.spots,(select max(Time) from tbl_gamesplayed where id=gi.id) as Time from game_info gi inner join rtblgame rg on gi.id= rg.id inner join tbl_state st on st.state_id=rg.state_id left join tbl_gamesplayed t on gi.id=t.id and st.state_id=t.state_id order by st.state_name");
     if (mysql_num_rows($selectquery) > 0)
                 {
                  while ($db_items = mysql_fetch_assoc($selectquery)) {
